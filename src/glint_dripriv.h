@@ -41,7 +41,7 @@ extern void GlxSetVisualConfigs(
 
 extern Bool GLINTCreateContext(ScreenPtr pScreen,
                                VisualPtr visual,
-                               drmContext hwContext,
+                               drm_context_t hwContext,
                                void* pVisualConfigPriv,
 			       DRIContextType contextStore);
 
