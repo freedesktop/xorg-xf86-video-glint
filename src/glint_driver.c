@@ -374,6 +374,7 @@ static const char *driSymbols[] = {
     "DRIQueryVersion",
     "DRIScreenInit",
     "GlxSetVisualConfigs",
+    "DRICreatePCIBusID",
     NULL
 };
 #endif
