@@ -294,6 +294,7 @@ static const char *ramdacSymbols[] = {
     "RamDacInit",
     "TIramdacCalculateMNPForClock",
     "TIramdacLoadPalette",
+    "TIramdacLoadPaletteWeak",
     "TIramdacProbe",
     "xf86CreateCursorInfoRec",
     "xf86DestroyCursorInfoRec",
@@ -312,12 +313,12 @@ static const char *fbdevHWSymbols[] = {
 	"fbdevHWGetVidmem",
 
 	/* colormap */
-	"fbdevHWLoadPalette",
+	"fbdevHWLoadPaletteWeak",
 
 	/* ScrnInfo hooks */
-	"fbdevHWAdjustFrame",
+	"fbdevHWAdjustFrameWeak",
 	"fbdevHWEnterVT",
-	"fbdevHWLeaveVT",
+	"fbdevHWLeaveVTWeak",
 	"fbdevHWMapMMIO",
 	"fbdevHWMapVidmem",
 	"fbdevHWModeInit",
@@ -326,7 +327,7 @@ static const char *fbdevHWSymbols[] = {
 	"fbdevHWSwitchMode",
 	"fbdevHWUnmapMMIO",
 	"fbdevHWUnmapVidmem",
-	"fbdevHWValidMode",
+	"fbdevHWValidModeWeak",
 	
 	NULL
 };
