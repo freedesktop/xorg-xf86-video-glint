@@ -28,7 +28,7 @@
  * this work is sponsored by S.u.S.E. GmbH, Fuerth, Elsa GmbH, Aachen, 
  * Siemens Nixdorf Informationssysteme and Appian Graphics.
  */
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/glint_driver.c,v 1.163 2003/11/03 22:17:21 tsi Exp $ */
+/* $XFree86$ */
 
 #include "fb.h"
 #include "cfb8_32.h"
