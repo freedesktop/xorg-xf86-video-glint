@@ -1248,9 +1248,9 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
 	pGlint->FBDev = TRUE;
         from = X_CONFIG;
 	
-	pScrn->AdjustFrame	= LoaderSymbol("fbdevHWAdjustFrame");
-	pScrn->LeaveVT		= LoaderSymbol("fbdevHWLeaveVT");
-	pScrn->ValidMode	= LoaderSymbol("fbdevHWValidMode");
+	pScrn->AdjustFrame	= fbdevHWAdjustFrameWeak();
+	pScrn->LeaveVT		= fbdevHWLeaveVTWeak();
+	pScrn->ValidMode	= fbdevHWValidModeWeak();
 	
     } else {
     	/* Only use FBDev if requested */
@@ -3104,7 +3104,7 @@ GLINTScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 	((pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_GAMMA) &&
 	 (pGlint->MultiChip == PCI_CHIP_PERMEDIA3)) ) {
     	if (!xf86HandleColormaps(pScreen, 256, pScrn->rgbBits,
-	    (pGlint->FBDev) ? LoaderSymbol("fbdevHWLoadPalette") : 
+	    (pGlint->FBDev) ? fbdevHWLoadPaletteWeak() : 
 	    ((pScrn->depth == 16) ? Permedia3LoadPalette16:Permedia3LoadPalette),
 	    NULL,
 	    CMAP_RELOAD_ON_MODE_SWITCH |
@@ -3116,7 +3116,7 @@ GLINTScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 	(pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA2) || 
 	(pGlint->Chipset == PCI_VENDOR_TI_CHIP_PERMEDIA2)) {
     	if (!xf86HandleColormaps(pScreen, 256, pScrn->rgbBits,
-	    (pGlint->FBDev) ? LoaderSymbol("fbdevHWLoadPalette") : 
+	    (pGlint->FBDev) ? fbdevHWLoadPaletteWeak() : 
 	    ((pScrn->depth == 16) ? Permedia2LoadPalette16:Permedia2LoadPalette),
 	    NULL,
 	    CMAP_RELOAD_ON_MODE_SWITCH |
