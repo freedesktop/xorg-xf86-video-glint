@@ -933,7 +933,7 @@ GLINTProbeTIramdac(ScrnInfoPtr pScrn)
     pGlint->RamDacRec->WriteAddress = glintTIWriteAddress;
     pGlint->RamDacRec->ReadData = glintTIReadData;
     pGlint->RamDacRec->WriteData = glintTIWriteData;
-    pGlint->RamDacRec->LoadPalette = LoaderSymbol("TIramdacLoadPalette");
+    pGlint->RamDacRec->LoadPalette = TIramdacLoadPaletteWeak();
 
     if(!RamDacInit(pScrn, pGlint->RamDacRec)) {
 	RamDacDestroyInfoRec(pGlint->RamDacRec);
