@@ -22,7 +22,7 @@
  * Authors:  Alan Hourihane, <alanh@fairlite.demon.co.uk>
  *           Dirk Hohndel, <hohndel@suse.de>
  *	     Stefan Dirsch, <sndirsch@suse.de>
- *	     Michel Dänzer, <michdaen@iiic.ethz.ch>
+ *	     Michel DÃ¤nzer, <michdaen@iiic.ethz.ch>
  *	     Sven Luther, <luther@dpt-info.u-strasbg.fr>
  *
  * this work is sponsored by S.u.S.E. GmbH, Fuerth, Elsa GmbH, Aachen, 

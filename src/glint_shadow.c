@@ -1,9 +1,9 @@
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/glint_shadow.c,v 1.1 1999/11/19 13:54:32 hohndel Exp $ */
+/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/glint_shadow.c,v 1.0 1999/08/22 05:57:35 dawes Exp $ */
 
 /*
    Copyright (c) 1999,  The XFree86 Project Inc. 
    Code adapted from mga/mga_shadow.c (Mark Vojkovich <markv@valinux.com>)
-   by Michel Dänzer <michdaen@iiic.ethz.ch>
+   by Michel DÃ¤nzer <michdaen@iiic.ethz.ch>
 */
 
 #include "xf86.h"
