@@ -1,4 +1,4 @@
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/glint_dri.c,v 1.37 2003/11/10 18:22:20 tsi Exp $ */
+/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/glint_dri.c,v 1.34 2003/07/09 01:45:22 dawes Exp $ */
 /**************************************************************************
 
 Copyright 1998-1999 Precision Insight, Inc., Cedar Park, Texas.
@@ -328,7 +328,7 @@ static Bool GLINTDRIAgpInit(ScreenPtr pScreen)
       return FALSE;
    }
    xf86DrvMsg( pScreen->myNum, X_INFO,
-	       "[agp] %d kB allocated with handle 0x%08lx\n",
+	       "[agp] %d kB allocated with handle 0x%08x\n",
 	       pGlint->agp.size/1024, pGlint->agp.handle );
 
    if ( drmAgpBind( pGlint->drmSubFD, pGlint->agp.handle, 0 ) < 0 ) {
@@ -358,7 +358,7 @@ static Bool GLINTDRIAgpInit(ScreenPtr pScreen)
       return FALSE;
    }
    xf86DrvMsg( pScreen->myNum, X_INFO,
-	       "[agp] DMA buffers mapped at %p\n", pGlint->buffers.map);
+	       "[agp] DMA buffers mapped at 0x%08lx\n", pGlint->buffers.map);
 
    count = drmAddBufs( pGlint->drmSubFD,
 		       GLINT_DRI_BUF_COUNT, GLINT_DRI_BUF_SIZE,
@@ -761,7 +761,7 @@ GLINTDRIScreenInit(ScreenPtr pScreen)
 	    return FALSE;
     	}
     	xf86DrvMsg(pScrn->scrnIndex, X_INFO, "[drm] buffers mapped with %p\n",
-	       (void *)pGlint->drmBufs);
+	       pGlint->drmBufs);
     	xf86DrvMsg(pScrn->scrnIndex, X_INFO, "[drm] %d DMA buffers mapped\n",
 	       pGlint->drmBufs->count);
     } /* PCIMODE */
@@ -966,7 +966,7 @@ GLINTDRIFinishScreenInit(ScreenPtr pScreen)
 		return FALSE;
     	}
     	xf86DrvMsg(pScrn->scrnIndex, X_INFO, "[agp] buffers mapped with %p\n",
-	       (void *)pGlint->drmBufs);
+	       pGlint->drmBufs);
     	xf86DrvMsg(pScrn->scrnIndex, X_INFO, "[agp] %d DMA buffers mapped\n",
 	       pGlint->drmBufs->count);
     }
@@ -1915,8 +1915,8 @@ GLINTDRIMoveBuffers(
     RegionPtr prgnSrc,
     CARD32 index)
 {
-    ScreenPtr pScreen = pParent->drawable.pScreen;
 #if 0
+    ScreenPtr pScreen = pParent->drawable.pScreen;
     ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
 #endif
     int dx, dy;
@@ -1928,8 +1928,8 @@ GLINTDRIMoveBuffers(
      * and stencil, they just get redrawn for the next frame(s).
      */
 
-    REGION_NULL(pScreen, &rgnSubWindow);
-    REGION_NULL(pScreen, &rgnTranslateSrc);
+    REGION_INIT(pScreen, &rgnSubWindow, NullBox, 0);
+    REGION_INIT(pScreen, &rgnTranslateSrc, NullBox, 0);
     REGION_COPY(pScreen, &rgnTranslateSrc, prgnSrc);
     dx = ptOldOrg.x - pParent->drawable.x;
     dy = ptOldOrg.y - pParent->drawable.y;

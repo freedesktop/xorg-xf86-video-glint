@@ -22,7 +22,7 @@
  * Authors: Alan Hourihane, alanh@fairlite.demon.co.uk
  *          Sven Luther <luther@dpt-info.u-strasbg.fr>
  */
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/pm3_video.c,v 1.14tsi Exp $ */
+/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/pm3_video.c,v 1.13 2003/05/09 02:12:56 dawes Exp $ */
 
 #include "xf86.h"
 #include "xf86_OSproc.h"
@@ -325,7 +325,7 @@ Permedia3SetupImageVideo(ScreenPtr pScreen)
     pPriv->Filter = PM3VideoOverlayMode_FILTER_FULL;
     
     /* gotta uninit this someplace */
-    REGION_NULL(pScreen, &pPriv->clip);
+    REGION_INIT(pScreen, &pPriv->clip, NullBox, 0); 
 
     pGlint->adaptor = adapt;
 
@@ -700,7 +700,7 @@ Permedia3DisplayVideo(
     GLINTPtr pGlint = GLINTPTR(pScrn);
     GLINTPortPrivPtr portPriv = pGlint->adaptor->pPortPrivates[0].ptr;
     unsigned int shrink, zoom;
-    unsigned int newx2;
+    unsigned int newx1, newx2;
 
     /* Let's overlay only to visible parts of the screen */
     if (dstBox->x1 == 0) {
@@ -718,7 +718,7 @@ Permedia3DisplayVideo(
 
     /* Let's adjust the width of source and dest to be compliant with 
      * the Permedia3 overlay unit requirement, and compute the X deltas. */
-    newx2 = drw_w;
+    newx1 = src_w; newx2 = drw_w;
     compute_scale_factor(&src_w, &drw_w, &shrink, &zoom);
     dstBox->x2 -= (newx2 - drw_w);
 

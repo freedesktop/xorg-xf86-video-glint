@@ -28,7 +28,7 @@
  * 
  * Permedia accelerated options.
  */
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/pm_accel.c,v 1.24tsi Exp $ */
+/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/pm_accel.c,v 1.23 2001/05/29 11:23:38 alanh Exp $ */
 
 #include "xf86.h"
 #include "xf86_OSproc.h"
@@ -740,7 +740,7 @@ PermediaWritePixmap8bpp(
 {
     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
     GLINTPtr pGlint = GLINTPTR(pScrn);
-    int dwords, count;
+    int skipleft, dwords, count;
     CARD32* srcp;
     unsigned char *srcpbyte;
     Bool FastTexLoad = FALSE;
@@ -755,9 +755,9 @@ PermediaWritePixmap8bpp(
 	FastTexLoad = FALSE;
 
 #if 0
-    if (rop != GXcopy) {
-	int skipleft;
-
+    if (rop == GXcopy) {
+	skipleft = 0;
+    } else {
 	if((skipleft = (long)src & 0x03)) {
 	    	skipleft /= (bpp>>3);
 
@@ -768,6 +768,7 @@ PermediaWritePixmap8bpp(
 	}
     }
 #endif
+    skipleft = 0;
 	
         if(FastTexLoad) {
 	  int address;
@@ -865,7 +866,7 @@ PermediaWritePixmap16bpp(
 {
     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
     GLINTPtr pGlint = GLINTPTR(pScrn);
-    int dwords, count;
+    int skipleft, dwords, count;
     CARD32* srcp;
     unsigned short* srcpword;
     Bool FastTexLoad;
@@ -881,9 +882,9 @@ PermediaWritePixmap16bpp(
 		FastTexLoad = FALSE;
 
 #if 0
-	if (rop != GXcopy) {
-	  int skipleft;
-
+	if (rop == GXcopy) {
+	  skipleft = 0;
+	} else {
 	  if((skipleft = (long)src & 0x03L)) {
 	    		skipleft /= (bpp>>3);
 
@@ -894,6 +895,7 @@ PermediaWritePixmap16bpp(
 	  }
 	}
 #endif
+	skipleft = 0;
 	
         if(FastTexLoad) {
 	  int address;
@@ -991,7 +993,7 @@ PermediaWritePixmap32bpp(
 {
     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
     GLINTPtr pGlint = GLINTPTR(pScrn);
-    int dwords, count;
+    int skipleft, dwords, count;
     CARD32* srcp;
     Bool FastTexLoad;
 
@@ -1011,8 +1013,6 @@ PermediaWritePixmap32bpp(
 	
 #if 0
 	if (!FastTexLoad) {
-	  int skipleft;
-
 	  if((skipleft = (long)src & 0x03L)) {
 	    		skipleft /= (bpp>>3);
 
@@ -1023,6 +1023,7 @@ PermediaWritePixmap32bpp(
 	  }
 	}
 #endif
+	skipleft = 0;
 	
         if(FastTexLoad) {
 	  int address;
@@ -1194,5 +1195,5 @@ PermediaSubsequentSolidBresenhamLine( ScrnInfoPtr pScrn,
                 (octant & XDECREASING) ? -1 : 1, 
                 (octant & YDECREASING) ? -1 : 1, 
                 (octant & YMAJOR) ? Y_AXIS : X_AXIS,
-                x, y,  e, dmin, -dmaj, len);
+                x, y, dmin + e, dmin, -dmaj, len);
 }
