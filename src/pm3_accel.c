@@ -1,3 +1,4 @@
+/* $XdotOrg$ */
 /*
  * Copyright 2000-2001 by Sven Luther <luther@dpt-info.u-strasbg.fr>.
  *
@@ -384,7 +385,7 @@ Permedia3InitializeEngine(ScrnInfoPtr pScrn)
     GLINT_SLOW_WRITE_REG(0, StartXSub);
     GLINT_SLOW_WRITE_REG(0, StartY);
     GLINT_SLOW_WRITE_REG(0, GLINTCount);
-    if (*pGlint->AccelInfoRec->Sync)
+    if (*pGlint->AccelInfoRec->Sync != NULL)
     	(*pGlint->AccelInfoRec->Sync)(pScrn);
     TRACE_EXIT("Permedia3InitializeEngine");
 }
