@@ -1,4 +1,4 @@
-/* $XFree86$ */
+/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/glint_shadow.c,v 1.1 1999/11/19 13:54:32 hohndel Exp $ */
 
 /*
    Copyright (c) 1999,  The XFree86 Project Inc. 

@@ -24,7 +24,7 @@
  * glintOutIBMRGBIndReg() and glintInIBMRGBIndReg() are used to access 
  * the indirect IBM RAMDAC registers only.
  */
-/* $XFree86$ */
+/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/IBMramdac.c,v 1.6 1999/02/12 22:52:02 hohndel Exp $ */
 
 #include "xf86.h"
 #include "xf86_OSproc.h"
