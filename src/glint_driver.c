@@ -59,8 +59,10 @@
 #include "TI.h"
 #include "glint.h"
 
+#ifdef XFreeXDGA
 #define _XF86DGA_SERVER_
 #include "extensions/xf86dgastr.h"
+#endif
 
 #include "globals.h"
 #define DPMS_SERVER
