@@ -28,7 +28,7 @@
  * this work is sponsored by S.u.S.E. GmbH, Fuerth, Elsa GmbH, Aachen, 
  * Siemens Nixdorf Informationssysteme and Appian Graphics.
  */
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/glint_driver.c,v 1.159 2003/08/26 15:22:17 tsi Exp $ */
+/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/glint_driver.c,v 1.162 2003/11/03 05:11:11 tsi Exp $ */
 
 #include "fb.h"
 #include "cfb8_32.h"
@@ -91,8 +91,8 @@ static Bool	GLINTSaveScreen(ScreenPtr pScreen, int mode);
 
 /* Optional functions */
 static void	GLINTFreeScreen(int scrnIndex, int flags);
-static int	GLINTValidMode(int scrnIndex, DisplayModePtr mode, Bool verbose,
-			     int flags);
+static ModeStatus GLINTValidMode(int scrnIndex, DisplayModePtr mode,
+				 Bool verbose, int flags);
 
 /* Internally used functions */
 static Bool	GLINTMapMem(ScrnInfoPtr pScrn);
@@ -387,7 +387,7 @@ static XF86ModuleVersionInfo glintVersRec =
 	MODULEVENDORSTRING,
 	MODINFOSTRING1,
 	MODINFOSTRING2,
-	XF86_VERSION_CURRENT,
+	XORG_VERSION_CURRENT,
 	GLINT_MAJOR_VERSION, GLINT_MINOR_VERSION, GLINT_PATCHLEVEL,
 	ABI_CLASS_VIDEODRV,			/* This is a video driver */
 	ABI_VIDEODRV_VERSION,
@@ -1378,7 +1378,7 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
 	if (pGlint->MultiPciInfo[0]->memBase[2]) {
 	    pGlint->FbAddress = pGlint->MultiPciInfo[0]->memBase[2];
 	    xf86DrvMsg(pScrn->scrnIndex, X_PROBED, 
-		"FrameBuffer used from first rasterizer chip at 0x%x\n", 
+		"FrameBuffer used from first rasterizer chip at 0x%lx\n", 
 				pGlint->MultiPciInfo[0]->memBase[2]);
 	} else {
 	    xf86DrvMsg(pScrn->scrnIndex, X_PROBED, 	
@@ -1485,7 +1485,7 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
         	    int glintcopro = pciTag(pGlint->MultiPciInfo[0]->bus, 
 						pGlint->MultiPciInfo[0]->device,
 			    			pGlint->MultiPciInfo[0]->func);
-		    int temp, base3copro, offset;
+		    int base3copro, offset;
 
     		    if( (basedelta & 0x20000) ^ (basecopro & 0x20000) ) {
  			if ((pGlint->MultiChip == PCI_CHIP_PERMEDIA) ||
@@ -1510,18 +1510,18 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
 	 		 * read value
 	 		 * write new value
 	 		 */
-			temp = pciReadLong(glintdelta, 0x10);
+			(void) pciReadLong(glintdelta, 0x10);
 			pciWriteLong(glintdelta, 0x10, 0xffffffff);
-			temp = pciReadLong(glintdelta, 0x10);
+			(void) pciReadLong(glintdelta, 0x10);
 			pciWriteLong(glintdelta, 0x10, base3copro);
 
 			/*
 	 		 * additionally,sometimes we see the baserom which might
 	 		 * confuse the chip, so let's make sure that is disabled
 	 		 */
-			temp = pciReadLong(glintcopro, 0x30);
+			(void) pciReadLong(glintcopro, 0x30);
 			pciWriteLong(glintcopro, 0x30, 0xffffffff);
-			temp = pciReadLong(glintcopro, 0x30);
+			(void) pciReadLong(glintcopro, 0x30);
 			pciWriteLong(glintcopro, 0x30, 0);
 
 			/*
@@ -1633,11 +1633,10 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
          (pGlint->numMultiDevices == 2) ) {
 	CARD32 chipconfig;
 	CARD32 size = 0;
-	CARD32 temp;
 
 	GLINTMapMem(pScrn);
 
-	temp = GLINT_READ_REG(GCSRAperture);
+	(void) GLINT_READ_REG(GCSRAperture);
 	GLINT_SLOW_WRITE_REG(GCSRSecondaryGLINTMapEn, GCSRAperture);
 
 	chipconfig = GLINT_READ_REG(GChipConfig);
@@ -1670,7 +1669,7 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
 	}
     }
 
-    xf86DrvMsg(pScrn->scrnIndex, from, "VideoRAM: %d kByte\n",
+    xf86DrvMsg(pScrn->scrnIndex, from, "VideoRAM: %ld kByte\n",
 		   pGlint->FbMapSize / 1024);
 
     /* The ramdac module should be loaded here when needed */
@@ -3529,7 +3528,7 @@ GLINTFreeScreen(int scrnIndex, int flags)
 /* Checks if a mode is suitable for the selected chipset. */
 
 /* Optional */
-static int
+static ModeStatus
 GLINTValidMode(int scrnIndex, DisplayModePtr mode, Bool verbose, int flags)
 {
     ScrnInfoPtr pScrn = xf86Screens[scrnIndex];
@@ -3676,7 +3675,8 @@ void
 GLINT_VERB_WRITE_REG(GLINTPtr pGlint, CARD32 v, int r, char *file, int line)
 {
     if (xf86GetVerbosity() > 2)
-	ErrorF("[0x%04x] <- 0x%08x (%s, %d)\n",	r, v, file, line);
+	ErrorF("[0x%04x] <- 0x%08lx (%s, %d)\n",
+		r, (unsigned long)v, file, line);
     *(volatile CARD32 *)((char *) pGlint->IOBase + pGlint->IOOffset + r) = v;
 }
 
@@ -3687,7 +3687,8 @@ GLINT_VERB_READ_REG(GLINTPtr pGlint, CARD32 r, char *file, int line)
 	*(volatile CARD32 *)((char *) pGlint->IOBase + pGlint->IOOffset + r);
 
     if (xf86GetVerbosity() > 2)
-	ErrorF("[0x%04x] -> 0x%08x (%s, %d)\n", r, v, file, line);
+	ErrorF("[0x%04lx] -> 0x%08lx (%s, %d)\n", (unsigned long)r,
+		(unsigned long)v, file, line);
     return v;
 }
 #endif
