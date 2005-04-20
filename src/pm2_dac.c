@@ -30,7 +30,7 @@
  */
 /* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/pm2_dac.c,v 1.26tsi Exp $ */
 
-#include "Xarch.h"
+#include <X11/Xarch.h>
 #include "xf86.h"
 #include "xf86_OSproc.h"
 #include "xf86_ansic.h"
