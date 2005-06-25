@@ -119,7 +119,7 @@ static Bool FBDevProbed = FALSE;
  * an upper-case version of the driver name.
  */
 
-DriverRec GLINT = {
+_X_EXPORT DriverRec GLINT = {
     VERSION,
     GLINT_DRIVER_NAME,
     GLINTIdentify,
@@ -398,7 +398,7 @@ static XF86ModuleVersionInfo glintVersRec =
 	{0,0,0,0}
 };
 
-XF86ModuleData glintModuleData = { &glintVersRec, glintSetup, NULL };
+_X_EXPORT XF86ModuleData glintModuleData = { &glintVersRec, glintSetup, NULL };
 
 pointer
 glintSetup(pointer module, pointer opts, int *errmaj, int *errmin)
