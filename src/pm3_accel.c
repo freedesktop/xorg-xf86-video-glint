@@ -1,4 +1,4 @@
-/* $XdotOrg: xc/programs/Xserver/hw/xfree86/drivers/glint/pm3_accel.c,v 1.2 2004/04/23 19:33:33 eich Exp $ */
+/* $XdotOrg: xc/programs/Xserver/hw/xfree86/drivers/glint/pm3_accel.c,v 1.3 2005/04/20 12:25:24 daniels Exp $ */
 /*
  * Copyright 2000-2001 by Sven Luther <luther@dpt-info.u-strasbg.fr>.
  *
