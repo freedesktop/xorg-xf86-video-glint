@@ -29,6 +29,10 @@
  */
 /* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/pm3_accel.c,v 1.30 2002/05/21 14:38:04 alanh Exp $ */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <X11/Xarch.h>
 #include "xf86.h"
 #include "xf86_OSproc.h"

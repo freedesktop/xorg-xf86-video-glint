@@ -27,7 +27,11 @@
  * this work is sponsored by S.u.S.E. GmbH, Fuerth, Elsa GmbH, Aachen and
  * Siemens Nixdorf Informationssysteme
  */
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/pm_dac.c,v 1.11 2002/02/27 18:41:04 alanh Exp $ */
+/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/pm_dac.c,v 1.11tsi Exp $ */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include "xf86.h"
 #include "xf86_OSproc.h"
@@ -96,9 +100,8 @@ PermediaInit(ScrnInfoPtr pScrn, DisplayModePtr mode)
     {
 	/* Get the programmable clock values */
     	unsigned long m=0,n=0,p=0,c=0;
-    	unsigned long clock;
 	
-    	clock = IBMramdac526CalculateMNPCForClock(pGlint->RefClock, mode->Clock,
+	(void) IBMramdac526CalculateMNPCForClock(pGlint->RefClock, mode->Clock,
 			1, pGlint->MinClock, pGlint->MaxClock, &m, &n, &p, &c);
 			
 	ramdacReg->DacRegs[IBMRGB_m0] = m;
@@ -110,7 +113,7 @@ PermediaInit(ScrnInfoPtr pScrn, DisplayModePtr mode)
 	ramdacReg->DacRegs[IBMRGB_pll_ctrl2] = 0x00;
 
 	p = 1;
-    	clock = IBMramdac526CalculateMNPCForClock(pGlint->RefClock, mode->Clock,
+	(void) IBMramdac526CalculateMNPCForClock(pGlint->RefClock, mode->Clock,
 			0, pGlint->MinClock, pGlint->MaxClock, &m, &n, &p, &c);
 
 	ramdacReg->DacRegs[IBMRGB_sysclk] = 0x05;
