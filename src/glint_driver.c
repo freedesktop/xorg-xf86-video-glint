@@ -35,7 +35,6 @@
 #endif
 
 #include "fb.h"
-#include "cfb8_32.h"
 #include "micmap.h"
 #include "xf86.h"
 #include "xf86_OSproc.h"
