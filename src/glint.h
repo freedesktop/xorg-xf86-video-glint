@@ -1,4 +1,4 @@
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/glint.h,v 1.59 2003/04/23 21:51:36 tsi Exp $ */
+/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/glint.h,v 1.58tsi Exp $ */
 /*
  * Copyright 1997-2001 by Alan Hourihane <alanh@fairlite.demon.co.uk>
  *
@@ -40,7 +40,6 @@
 #include "xf86drm.h"
 #include "sarea.h"
 #define _XF86DRI_SERVER_
-#include "xf86dri.h"
 #include "dri.h"
 #include "GL/glxint.h"
 #include "glint_dripriv.h"
