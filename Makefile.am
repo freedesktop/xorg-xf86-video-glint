@@ -20,3 +20,5 @@
 
 AUTOMAKE_OPTIONS = foreign
 SUBDIRS = src man
+
+EXTRA_DIST = DRI.txt README.pm3

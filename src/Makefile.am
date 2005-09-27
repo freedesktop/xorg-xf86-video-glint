@@ -54,7 +54,7 @@ glint_drv_la_SOURCES = \
          tx_dac.c
 
 if DRI
-glint_drv_la_SOURCES = \
+glint_drv_la_SOURCES += \
          glint_dri.c \
          glint_dri.h \
          glint_dripriv.h
