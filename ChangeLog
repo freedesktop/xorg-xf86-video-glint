@@ -1,3 +1,8 @@
+2006-02-02  Alan Hourihane  <alanh@fairlite.demon.co.uk>
+
+	* src/glint.h:
+	Allocate more space for the dac registers on pm2v hardware.
+
 2006-01-09  David Nusinow  <gravity-at-freedesktop-dot-org>
 
 	* man/glint.man:

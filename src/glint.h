@@ -56,7 +56,7 @@
 
 typedef struct {
 	CARD32 glintRegs[0x2000];
-	CARD32 DacRegs[0x100];
+	CARD32 DacRegs[0x1000];
 	CARD8 cmap[0x300];
 } GLINTRegRec, *GLINTRegPtr;
 
