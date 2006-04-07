@@ -1,3 +1,29 @@
+2006-04-07  Adam Jackson  <ajax@freedesktop.org>
+
+	* configure.ac:
+	* src/IBMramdac.c:
+	* src/TIramdac.c:
+	* src/glint.h:
+	* src/glint_dga.c:
+	* src/glint_dri.c:
+	* src/glint_driver.c:
+	* src/glint_shadow.c:
+	* src/pm2_accel.c:
+	* src/pm2_dac.c:
+	* src/pm2_video.c:
+	* src/pm2ramdac.c:
+	* src/pm2v_dac.c:
+	* src/pm2vramdac.c:
+	* src/pm3_accel.c:
+	* src/pm3_dac.c:
+	* src/pm3_video.c:
+	* src/pm_accel.c:
+	* src/pm_dac.c:
+	* src/sx_accel.c:
+	* src/tx_accel.c:
+	* src/tx_dac.c:
+	Unlibcwrap.  Bump server version requirement.  Bump to 1.1.0.
+
 2006-02-02  Alan Hourihane  <alanh@fairlite.demon.co.uk>
 
 	* src/glint.h:

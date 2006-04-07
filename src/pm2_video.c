@@ -29,7 +29,6 @@
 
 #include "xf86.h"
 #include "xf86_OSproc.h"
-#include "xf86_ansic.h"
 #include "xf86Pci.h"
 #include "xf86PciInfo.h"
 #include "xf86fbman.h"
@@ -39,6 +38,9 @@
 
 #include "glint_regs.h"
 #include "glint.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #undef MIN
 #undef ABS
@@ -2985,7 +2987,7 @@ Permedia2VideoInit(ScreenPtr pScreen)
     options[2] = NULL;	/* VideoAdaptor options */
 
     for (i = 0;; i++) {
-	char *adaptor; /* receives VideoAdaptor section identifier */
+	char *adaptor = NULL; /* receives VideoAdaptor section identifier */
 
 	if (!options[0])
 	    options[0] = xf86FindXvOptions(pScreen->myNum, i, "input", &adaptor, options[2] ? NULL : &options[2]);

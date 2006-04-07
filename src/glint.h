@@ -44,15 +44,18 @@
 #include "GL/glxint.h"
 #include "glint_dripriv.h"
 #endif
+#include <stdio.h>
+#include <errno.h>
+#include <string.h>
 
 #define GLINT_MAX_MULTI_DEVICES 2
 
-#define VERSION 4000
+#define GLINT_VERSION 4000
 #define GLINT_NAME "GLINT"
 #define GLINT_DRIVER_NAME "glint"
 #define GLINT_MAJOR_VERSION 1
-#define GLINT_MINOR_VERSION 0
-#define GLINT_PATCHLEVEL 1
+#define GLINT_MINOR_VERSION 1
+#define GLINT_PATCHLEVEL 0
 
 typedef struct {
 	CARD32 glintRegs[0x2000];
