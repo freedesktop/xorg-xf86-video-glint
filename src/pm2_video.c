@@ -1507,7 +1507,7 @@ static int
 Permedia2PutVideo(ScrnInfoPtr pScrn,
     short vid_x, short vid_y, short drw_x, short drw_y,
     short vid_w, short vid_h, short drw_w, short drw_h,
-    RegionPtr clipBoxes, pointer data)
+    RegionPtr clipBoxes, pointer data, DrawablePtr pDraw)
 {
     PortPrivPtr pPPriv = (PortPrivPtr) data;
     AdaptorPrivPtr pAPriv = pPPriv->pAdaptor;
@@ -1550,7 +1550,7 @@ static int
 Permedia2PutStill(ScrnInfoPtr pScrn,
     short vid_x, short vid_y, short drw_x, short drw_y,
     short vid_w, short vid_h, short drw_w, short drw_h,
-    RegionPtr clipBoxes, pointer data)
+    RegionPtr clipBoxes, pointer data, DrawablePtr pDraw)
 {
     PortPrivPtr pPPriv = (PortPrivPtr) data;  
     AdaptorPrivPtr pAPriv = pPPriv->pAdaptor;
@@ -1611,7 +1611,7 @@ static int
 Permedia2GetVideo(ScrnInfoPtr pScrn,
     short vid_x, short vid_y, short drw_x, short drw_y,
     short vid_w, short vid_h, short drw_w, short drw_h,
-    RegionPtr clipBoxes, pointer data)
+    RegionPtr clipBoxes, pointer data, DrawablePtr pDraw)
 {
     PortPrivPtr pPPriv = (PortPrivPtr) data;
     AdaptorPrivPtr pAPriv = pPPriv->pAdaptor;
@@ -1658,7 +1658,7 @@ static int
 Permedia2GetStill(ScrnInfoPtr pScrn,
     short vid_x, short vid_y, short drw_x, short drw_y,
     short vid_w, short vid_h, short drw_w, short drw_h,
-    RegionPtr clipBoxes, pointer data)
+    RegionPtr clipBoxes, pointer data, DrawablePtr pDraw)
 {
     PortPrivPtr pPPriv = (PortPrivPtr) data;  
     AdaptorPrivPtr pAPriv = pPPriv->pAdaptor;
@@ -1768,7 +1768,8 @@ Permedia2PutImage(ScrnInfoPtr pScrn,
     short src_x, short src_y, short drw_x, short drw_y,
     short src_w, short src_h, short drw_w, short drw_h,
     int id, unsigned char *buf, short width, short height,
-    Bool sync, RegionPtr clipBoxes, pointer data)
+    Bool sync, RegionPtr clipBoxes, pointer data,
+    DrawablePtr pDraw)
 {
     PortPrivPtr pPPriv = (PortPrivPtr) data;  
     AdaptorPrivPtr pAPriv = pPPriv->pAdaptor;

@@ -1,3 +1,11 @@
+2006-04-07  Aaron Plattner  <aplattner@nvidia.com>
+
+	* src/pm2_video.c: (Permedia2PutVideo), (Permedia2PutStill),
+	(Permedia2GetVideo), (Permedia2GetStill), (Permedia2PutImage):
+	* src/pm3_video.c: (Permedia3PutImage):
+	Add a DrawablePtr argument to the XV functions to pave the way for
+	redirected video.
+
 2006-04-07  Adam Jackson  <ajax@freedesktop.org>
 
 	* configure.ac:
