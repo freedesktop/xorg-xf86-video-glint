@@ -55,7 +55,7 @@
 #define GLINT_DRIVER_NAME "glint"
 #define GLINT_MAJOR_VERSION 1
 #define GLINT_MINOR_VERSION 1
-#define GLINT_PATCHLEVEL 0
+#define GLINT_PATCHLEVEL 1
 
 typedef struct {
 	CARD32 glintRegs[0x2000];
