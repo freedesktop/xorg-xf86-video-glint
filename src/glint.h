@@ -36,7 +36,7 @@
 #include "xf86i2c.h"
 #include "xf86DDC.h"
 #include "xf86xv.h"
-#ifdef XF86DRI
+#ifdef XF86DRI_DEVEL
 #include "xf86drm.h"
 #include "sarea.h"
 #define _XF86DRI_SERVER_
@@ -169,7 +169,7 @@ typedef struct {
     void		(*VideoTimerCallback)(ScrnInfoPtr, Time);
     XF86VideoAdaptorPtr adaptor;
     int                 videoKey;
-#ifdef XF86DRI
+#ifdef XF86DRI_DEVEL
     Bool		directRenderingEnabled;
     Bool		PCIMode;
     DRIInfoPtr		pDRIInfo;

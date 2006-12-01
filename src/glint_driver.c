@@ -344,7 +344,7 @@ const char *GLINTint10Symbols[] = {
 
 #ifdef XFree86LOADER
 
-#ifdef XF86DRI
+#ifdef XF86DRI_DEVEL
 static const char *drmSymbols[] = {
     "drmAddBufs",
     "drmAddMap",
@@ -414,7 +414,7 @@ glintSetup(pointer module, pointer opts, int *errmaj, int *errmin)
 			  xaaSymbols, xf8_32bppSymbols,
 			  shadowSymbols, fbdevHWSymbols, GLINTint10Symbols,
 			  vbeSymbols, ramdacSymbols,
-#ifdef XF86DRI
+#ifdef XF86DRI_DEVEL
 			  drmSymbols, driSymbols,
 #endif
 			  NULL);
@@ -2924,7 +2924,7 @@ GLINTScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 	    return FALSE;
     }
 
-#ifdef XF86DRI
+#ifdef XF86DRI_DEVEL
     /*
      * Setup DRI after visuals have been established, but before fbScreenInit
      * is called. fbScreenInit will eventually call into the drivers
@@ -3153,7 +3153,7 @@ GLINTScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 
     xf86DPMSInit(pScreen, (DPMSSetProcPtr)GLINTDisplayPowerManagementSet, 0);
 
-#ifdef XF86DRI
+#ifdef XF86DRI_DEVEL
     if (pGlint->directRenderingEnabled) {
 	/* Now that mi, cfb, drm and others have done their thing, 
          * complete the DRI setup.
@@ -3462,7 +3462,7 @@ GLINTCloseScreen(int scrnIndex, ScreenPtr pScreen)
     GLINTPtr pGlint = GLINTPTR(pScrn);
 
     TRACE_ENTER("GLINTCloseScreen");
-#ifdef XF86DRI
+#ifdef XF86DRI_DEVEL
     if (pGlint->directRenderingEnabled) {
 	GLINTDRICloseScreen(pScreen);
     }

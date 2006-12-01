@@ -1282,7 +1282,7 @@ do{								\
 	}							\
 }
 
-#ifndef XF86DRI
+#ifndef XF86DRI_DEVEL
 #define LOADROP(rop)						\
 {								\
 	if (pGlint->ROP != rop)	{				\
@@ -1307,7 +1307,7 @@ do{								\
 	}							\
 }
 
-#ifndef XF86DRI
+#ifndef XF86DRI_DEVEL
 #define DO_PLANEMASK(planemask)					\
 { 								\
 	if (planemask != pGlint->planemask) {			\

@@ -67,7 +67,7 @@
 #define PM3_OTHERWRITEMASK \
   (pGlint->PM3_UsingSGRAM ? PM3FBSoftwareWriteMask : PM3FBHardwareWriteMask )
 
-#ifndef XF86DRI
+#ifndef XF86DRI_DEVEL
 #define PM3_PLANEMASK(planemask)				\
 { 								\
 	if (planemask != pGlint->planemask) {			\
