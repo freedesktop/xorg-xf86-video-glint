@@ -49,6 +49,7 @@
 #include "xf86int10.h"
 #include "dixstruct.h"
 #include "vbe.h"
+#include "cfb8_32.h"
 
 #include "compiler.h"
 #include "mipointer.h"
