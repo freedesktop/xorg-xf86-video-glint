@@ -489,11 +489,13 @@ GLINTDRIScreenInit(ScreenPtr pScreen)
     if (xf86LoaderCheckSymbol("DRICreatePCIBusID")) {
 	pDRIInfo->busIdString = DRICreatePCIBusID(pGlint->PciInfo);
     } else {
+#ifndef XSERVER_LIBPCIACCESS
 	pDRIInfo->busIdString = xalloc(64); /* Freed in DRIDestroyInfoRec */
 	sprintf(pDRIInfo->busIdString, "PCI:%d:%d:%d",
 		((pciConfigPtr)pGlint->PciInfo->thisCard)->busnum,
 		((pciConfigPtr)pGlint->PciInfo->thisCard)->devnum,
 		((pciConfigPtr)pGlint->PciInfo->thisCard)->funcnum);
+#endif
     }
     pDRIInfo->ddxDriverMajorVersion = GLINT_MAJOR_VERSION;
     pDRIInfo->ddxDriverMinorVersion = GLINT_MINOR_VERSION;
@@ -775,12 +777,9 @@ GLINTDRIScreenInit(ScreenPtr pScreen)
 
     if (pGlint->irq <= 0) {
 	pGlint->irq = drmGetInterruptFromBusID(pGlint->drmSubFD,
-					       ((pciConfigPtr)pGlint->PciInfo
-						->thisCard)->busnum,
-					       ((pciConfigPtr)pGlint->PciInfo
-						->thisCard)->devnum,
-					       ((pciConfigPtr)pGlint->PciInfo
-						->thisCard)->funcnum);
+					       PCI_CFG_BUS(pGlint->PciInfo),
+					       PCI_CFG_DEV(pGlint->PciInfo),
+					       PCI_CFG_FUNC(pGlint->PciInfo));
     }
     
     return TRUE;

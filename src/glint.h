@@ -30,6 +30,12 @@
 #ifndef _GLINT_H_
 #define _GLINT_H_
 
+#include <stdio.h>
+#include <errno.h>
+#include <string.h>
+
+#include "glintpcirename.h"
+
 #include "xaa.h"
 #include "xf86RamDac.h"
 #include "xf86cmap.h"
@@ -44,9 +50,6 @@
 #include "GL/glxint.h"
 #include "glint_dripriv.h"
 #endif
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
 
 #define GLINT_MAX_MULTI_DEVICES 2
 
@@ -77,7 +80,9 @@ typedef struct {
     int			numMultiDevices;
     int			MultiChip;
     Bool		MultiAperture;
+#ifndef XSERVER_LIBPCIACCESS
     PCITAG		PciTag;
+#endif
     EntityInfoPtr	pEnt;
     GLINTEntPtr		entityPrivate;	
     RamDacHelperRecPtr	RamDac;
