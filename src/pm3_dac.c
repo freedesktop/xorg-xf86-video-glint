@@ -485,7 +485,7 @@ Permedia3Init(ScrnInfoPtr pScrn, DisplayModePtr mode, GLINTRegPtr pReg)
     if (pGlint->MultiAperture) {
 	STOREREG(GMultGLINTAperture, pGlint->realWidth);
 	STOREREG(GMultGLINT1, PCI_REGION_BASE(pGlint->MultiPciInfo[0], 2, REGION_MEM) & 0xFF800000);
-	STOREREG(GMultGLINT2, PCI_REGION_BASE(pGlint->MultiPciInfo[1], 2, REIGON_MEM) & 0xFF800000);
+	STOREREG(GMultGLINT2, PCI_REGION_BASE(pGlint->MultiPciInfo[1], 2, REGION_MEM) & 0xFF800000);
     }
 
     STOREREG(PM3MemBypassWriteMask, 	0xffffffff);
