@@ -49,7 +49,6 @@
 #include "xf86int10.h"
 #include "dixstruct.h"
 #include "vbe.h"
-#include "cfb8_32.h"
 
 #include "compiler.h"
 #include "mipointer.h"
@@ -653,9 +652,11 @@ GLINTProbe(DriverPtr drv, int flags)
   	return FALSE;
     }
 
+#ifndef XSERVER_LIBPCIACCESS
     checkusedPci = xf86GetPciVideoInfo();
      
-    if (checkusedPci == NULL && devSections /* for xf86DoProbe */) {
+    if (checkusedPci == NULL && devSections /* for xf86DoProbe */) 
+      {
   	/*
  	 * Changed the behaviour to try probing using the FBDev support
  	 * when no PCI cards have been found. This is for systems without
@@ -722,7 +723,9 @@ GLINTProbe(DriverPtr drv, int flags)
 	
     	xfree(devSections);
 	
-    } else  if (checkusedPci) {
+    } else  if (checkusedPci) 
+#endif
+{
 	if (flags & PROBE_DETECT) {
 	   /* HACK, Currently when -configuring, we only return VGA
 	    * based chips. Manual configuring is necessary to poke
@@ -745,8 +748,8 @@ GLINTProbe(DriverPtr drv, int flags)
 	if (!(flags & PROBE_DETECT))
 	    for (i = 0; i < numUsed; i++) {
 		ScrnInfoPtr pScrn = NULL;
-		GLINTEntPtr pGlintEnt = NULL;					
-		DevUnion *pPriv;						
+		GLINTEntPtr pGlintEnt = NULL;
+		DevUnion *pPriv;
 	
 		pPci = xf86GetPciInfoForEntity(usedChips[i]);
 		/* Allocate a ScrnInfoRec and claim the slot */
@@ -756,14 +759,16 @@ GLINTProbe(DriverPtr drv, int flags)
 
 
 		/* Claim specifics, when we KNOW ! the board */
-
+#ifndef XSERVER_LIBPCIACCESS
 		/* Appian Jeronimo J2000 */
 		if ((PCI_SUB_VENDOR_ID(pPci) == 0x1097) && 
 	    	    (PCI_SUB_DEVICE_ID(pPci)   == 0x3d32)) {
 			int eIndex;
+			int init_func;
+
 			if (!xf86IsEntityShared(usedChips[i])) {
 		    	eIndex = xf86ClaimPciSlot(pPci->bus, 
-						  pPci->device, 
+						  pPci->device,
 						  1,
 						  drv, -1 /* XXX */,
 						  NULL, FALSE);
@@ -809,6 +814,7 @@ GLINTProbe(DriverPtr drv, int flags)
 	                checkusedPci++;						
 	            }
 		}
+#endif
 
 		/* Fill in what we can of the ScrnInfoRec */
 		pScrn->driverVersion	= GLINT_VERSION;
@@ -1531,8 +1537,10 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
 			/*
 	 		 * now update our internal structure accordingly
 	 		 */
-			pGlint->IOAddress = 
-			    pGlint->PciInfo->memBase[0] = base3copro;
+			pGlint->IOAddress = base3copro;
+#ifndef XSERVER_LIBPCIACCESS
+			pGlint->memBase[0] = base3copro;
+#endif
     			xf86DrvMsg(pScrn->scrnIndex, from, 
 			       "Delta Bug - Changing MMIO registers to 0x%lX\n",
 	       		       (unsigned long)pGlint->IOAddress);
