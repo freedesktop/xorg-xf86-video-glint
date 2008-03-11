@@ -1539,7 +1539,7 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
 	 		 */
 			pGlint->IOAddress = base3copro;
 #ifndef XSERVER_LIBPCIACCESS
-			pGlint->memBase[0] = base3copro;
+			pGlint->PciInfo->memBase[0] = base3copro;
 #endif
     			xf86DrvMsg(pScrn->scrnIndex, from, 
 			       "Delta Bug - Changing MMIO registers to 0x%lX\n",
