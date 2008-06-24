@@ -1408,7 +1408,7 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
 	pGlint->IOAddress = pGlint->pEnt->device->IOBase;
 	from = X_CONFIG;
     } else {
-	pGlint->IOAddress = PCI_REGION_BASE(pGlint->MultiPciInfo[0], 0, REGION_MEM) & 0xFFFFC000;
+	pGlint->IOAddress = PCI_REGION_BASE(pGlint->PciInfo, 0, REGION_MEM) & 0xFFFFC000;
     }
 
     if ((IS_J2000) && (pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_GAMMA)) {
