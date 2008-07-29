@@ -69,6 +69,7 @@ CPPFLAGS="$CPPFLAGS $XORG_CFLAGS"
 AC_CHECK_DECL(XSERVER_LIBPCIACCESS,
               [XSERVER_LIBPCIACCESS=yes],[XSERVER_LIBPCIACCESS=no],
               [#include "xorg-server.h"])
+AC_CHECK_HEADER(cfb8_32.h,[AC_DEFINE(HAVE_CFB8_32, 1, [Have cfb8_32 support])],[])
 CPPFLAGS="$SAVE_CPPFLAGS"
 
 # Checks for header files.

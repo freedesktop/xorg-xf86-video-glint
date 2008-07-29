@@ -2885,7 +2885,9 @@ GLINTScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
     ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
     GLINTPtr pGlint = GLINTPTR(pScrn);
     int ret, displayWidth;
+#if HAVE_CFB8_32
     int init_picture = 0;
+#endif
     unsigned char *FBStart;
     VisualPtr visual;
     
@@ -3003,10 +3005,14 @@ GLINTScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
     case 8:
     case 16:
     case 24:
+#if !HAVE_CFB8_32
+    case 32:
+#endif
 	ret = fbScreenInit(pScreen, FBStart,
 			pScrn->virtualX, pScrn->virtualY,
 			pScrn->xDpi, pScrn->yDpi,
 			displayWidth, pScrn->bitsPerPixel);
+#if HAVE_CFB8_32
 	init_picture = 1;
 	break;
     case 32:
@@ -3022,6 +3028,7 @@ GLINTScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 			displayWidth, pScrn->bitsPerPixel);
 	    init_picture = 1;
 	}
+#endif
 	break;
     default:
 	xf86DrvMsg(scrnIndex, X_ERROR,
@@ -3059,7 +3066,9 @@ GLINTScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
     }
 
     /* must be after RGB ordering fixed */
+#if HAVE_CFB8_32
     if (init_picture)
+#endif
 	fbPictureInit(pScreen, 0, 0);
     if (!pGlint->NoAccel) {
         switch (pGlint->Chipset)
@@ -3188,11 +3197,13 @@ GLINTScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 	}
     }
 
+#if HAVE_CFB8_32
     if((pScrn->overlayFlags & OVERLAY_8_32_PLANAR) && 
 						(pScrn->bitsPerPixel == 32)) {
 	if(!xf86Overlay8Plus32Init(pScreen))
 	    return FALSE;
     }
+#endif
 
     if(pGlint->ShadowFB)
 	ShadowFBInit(pScreen, GLINTRefreshArea);
