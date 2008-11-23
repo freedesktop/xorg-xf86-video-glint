@@ -692,17 +692,8 @@ GLINTProbe(DriverPtr drv, int flags)
  		    if (pScrn)
   			xf86DrvMsg(pScrn->scrnIndex, X_CONFIG,
   				   "claimed PCI slot %d:%d:%d\n",bus,device,func);
- 		} else {
- 		    /* XXX This is a quick hack */
- 		    int entity;
- 		    
- 		    entity = xf86ClaimIsaSlot(drv, 0,
- 					      devSections[i], TRUE);
- 		    pScrn = xf86ConfigIsaEntity(pScrn,0,entity,
- 					      NULL,RES_SHARED_VGA,
- 					      NULL,NULL,NULL,NULL);
  		}
- 		if (pScrn) {
+		if (pScrn) {
   		    /* Fill in what we can of the ScrnInfoRec */
  		    xf86DrvMsg(pScrn->scrnIndex, X_INFO,
  			       "%s successfully probed\n", dev ? dev : "default framebuffer device");
