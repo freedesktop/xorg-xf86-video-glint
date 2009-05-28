@@ -229,158 +229,7 @@ static RamDacSupportedInfoRec TIRamdacs[] = {
     { -1 }
 };
 
-static const char *xf8_32bppSymbols[] = {
-    "cfb8_32ScreenInit",
-    "xf86Overlay8Plus32Init",
-    NULL
-};
-
-static const char *xaaSymbols[] = {
-    "XAACreateInfoRec",
-    "XAADestroyInfoRec",
-    "XAAInit",
-    "XAAPolyLines",
-    "XAAPolySegment",
-    NULL
-};
-
-static const char *fbSymbols[] = {
-    "fbBres",
-    "fbPictureInit",
-    "fbScreenInit",
-    NULL
-};
-
-static const char *ddcSymbols[] = {
-    "xf86PrintEDID",
-    "xf86DoEDID_DDC2",
-    "xf86SetDDCproperties",
-    NULL
-};
-
-static const char *i2cSymbols[] = {
-    "xf86CreateI2CBusRec",
-    "xf86DestroyI2CBusRec",
-    "xf86DestroyI2CDevRec",
-    "xf86I2CBusInit",
-    "xf86I2CDevInit",
-    "xf86I2CProbeAddress",
-    "xf86I2CWriteByte",
-    "xf86I2CWriteVec",    
-    NULL
-};
-
-static const char *shadowSymbols[] = {
-    "ShadowFBInit",
-    NULL
-};
-
 #ifdef XFree86LOADER
-static const char *vbeSymbols[] = {
-    "VBEInit",
-    "vbeDoEDID",
-    "vbeFree",
-    NULL
-};
-#endif
-
-static const char *ramdacSymbols[] = {
-    "IBMramdac526CalculateMNPCForClock",
-    "IBMramdac640CalculateMNPCForClock",
-    "IBMramdacProbe",
-    "RamDacCreateInfoRec",
-    "RamDacDestroyInfoRec",
-    "RamDacFreeRec",
-    "RamDacGetHWIndex",
-    "RamDacHandleColormaps",
-    "RamDacInit",
-    "TIramdacCalculateMNPForClock",
-    "TIramdacLoadPalette",
-    "TIramdacLoadPaletteWeak",
-    "TIramdacProbe",
-    "xf86CreateCursorInfoRec",
-    "xf86DestroyCursorInfoRec",
-    "xf86InitCursor",
-    NULL
-};
-
-
-static const char *fbdevHWSymbols[] = {
-	"fbdevHWFreeRec",
-	"fbdevHWInit",
-	"fbdevHWProbe",
-	"fbdevHWUseBuildinMode",
-
-	"fbdevHWGetDepth",
-	"fbdevHWGetVidmem",
-
-	/* colormap */
-	"fbdevHWLoadPaletteWeak",
-
-	/* ScrnInfo hooks */
-	"fbdevHWAdjustFrameWeak",
-	"fbdevHWEnterVT",
-	"fbdevHWLeaveVTWeak",
-	"fbdevHWMapMMIO",
-	"fbdevHWMapVidmem",
-	"fbdevHWModeInit",
-	"fbdevHWRestore",
-	"fbdevHWSave",
-	"fbdevHWSwitchMode",
-	"fbdevHWUnmapMMIO",
-	"fbdevHWUnmapVidmem",
-	"fbdevHWValidModeWeak",
-	
-	NULL
-};
-
-const char *GLINTint10Symbols[] = {
-    "xf86FreeInt10",
-    "xf86InitInt10",
-    NULL
-};
-
-#ifdef XFree86LOADER
-
-#ifdef XF86DRI_DEVEL
-static const char *drmSymbols[] = {
-    "drmAddBufs",
-    "drmAddMap",
-    "drmAgpAcquire",
-    "drmAgpAlloc",
-    "drmAgpBind",
-    "drmAgpEnable",
-    "drmAgpFree",
-    "drmAgpGetMode",
-    "drmAgpRelease",
-    "drmAgpUnbind",
-    "drmCommandWrite",
-    "drmCtlInstHandler",
-    "drmFreeBufs",
-    "drmFreeVersion",
-    "drmGetInterruptFromBusID",
-    "drmGetLibVersion",
-    "drmGetVersion",
-    "drmMap",
-    "drmMapBufs",
-    "drmUnmap",
-    "drmUnmapBufs",
-    NULL
-};
-
-static const char *driSymbols[] = {
-    "DRICloseScreen",
-    "DRICreateInfoRec",
-    "DRIDestroyInfoRec",
-    "DRIFinishScreenInit",
-    "DRIGetDrawableIndex",
-    "DRIQueryVersion",
-    "DRIScreenInit",
-    "GlxSetVisualConfigs",
-    "DRICreatePCIBusID",
-    NULL
-};
-#endif
 
 static MODULESETUPPROTO(glintSetup);
 
@@ -408,14 +257,6 @@ glintSetup(pointer module, pointer opts, int *errmaj, int *errmin)
     if (!setupDone) {
 	setupDone = TRUE;
 	xf86AddDriver(&GLINT, module, 0);
-	LoaderRefSymLists(fbSymbols, ddcSymbols, i2cSymbols,
-			  xaaSymbols, xf8_32bppSymbols,
-			  shadowSymbols, fbdevHWSymbols, GLINTint10Symbols,
-			  vbeSymbols, ramdacSymbols,
-#ifdef XF86DRI_DEVEL
-			  drmSymbols, driSymbols,
-#endif
-			  NULL);
 	return (pointer)TRUE;
     }
 
@@ -663,8 +504,6 @@ GLINTProbe(DriverPtr drv, int flags)
  	if (!xf86LoadDrvSubModule(drv, "fbdevhw"))
 	    return FALSE;
 	
- 	xf86LoaderReqSymLists(fbdevHWSymbols, NULL);
-  	
  	for (i = 0; i < numDevSections; i++) {
  	    dev = xf86FindOptionValue(devSections[i]->options,"fbdev");
  	    if (devSections[i]->busID) {
@@ -986,7 +825,6 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
     ClockRangePtr clockRanges;
     char *mod = NULL;
     const char *s;
-    const char **syms = NULL;
 
     TRACE_ENTER("GLINTPreInit");
 
@@ -1239,8 +1077,6 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
 		return FALSE;
 	}
 
-	xf86LoaderReqSymLists(fbdevHWSymbols, NULL);
-
 	if (!fbdevHWInit(pScrn,NULL,xf86FindOptionValue(pGlint->pEnt->device->options,"fbdev")))
 	{
 		xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "fbdevHWInit failed!\n");
@@ -1446,7 +1282,6 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
     	if ( xf86LoadSubModule(pScrn, "int10")){
 	    xf86Int10InfoPtr pInt;
 
-	    xf86LoaderReqSymLists(GLINTint10Symbols, NULL);
 	    xf86DrvMsg(pScrn->scrnIndex, X_INFO, "Initializing int10\n");
 	    pInt = xf86InitInt10(pGlint->pEnt->index);
 	    xf86FreeInt10(pInt);
@@ -1676,8 +1511,6 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
     /* The ramdac module should be loaded here when needed */
     if (!xf86LoadSubModule(pScrn, "ramdac"))
 	return FALSE;
-
-    xf86LoaderReqSymLists(ramdacSymbols, NULL);
 
     /* Let's check what type of DAC we have and reject if necessary */
     switch (pGlint->Chipset) {
@@ -2054,7 +1887,6 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
 	GLINTFreeRec(pScrn);
 	return FALSE;
     }
-    xf86LoaderReqSymLists(ddcSymbols, NULL);
     /* Load I2C if needed */
     if ((pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA2) ||
 	(pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA2V) ||
@@ -2065,7 +1897,6 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
 	if (xf86LoadSubModule(pScrn, "i2c")) {
 	    I2CBusPtr pBus;
 
-	    xf86LoaderReqSymLists(i2cSymbols, NULL);
 	    if ((pBus = xf86CreateI2CBusRec())) {
 		pBus->BusName = "DDC";
 		pBus->scrnIndex = pScrn->scrnIndex;
@@ -2395,24 +2226,18 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
     case 16:
     case 24:
 	mod = "fb";
-	syms = fbSymbols;
 	break;
     case 32:
 	if (pScrn->overlayFlags & OVERLAY_8_32_PLANAR) {
 	    mod = "xf8_32bpp";
-	    syms = xf8_32bppSymbols;
 	} else {
 	    mod = "fb";
-	    syms = fbSymbols;
 	}
 	break;
     }
     if (mod && xf86LoadSubModule(pScrn, mod) == NULL) {
 	GLINTFreeRec(pScrn);
 	return FALSE;
-    }
-    if (mod && syms) {
-	xf86LoaderReqSymLists(syms, NULL);
     }
 
     /* Load XAA if needed */
@@ -2421,7 +2246,6 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
 	    GLINTFreeRec(pScrn);
 	    return FALSE;
 	}
-	xf86LoaderReqSymLists(xaaSymbols, NULL);
     }
 
     /* Load shadowfb if needed */
@@ -2430,7 +2254,6 @@ GLINTPreInit(ScrnInfoPtr pScrn, int flags)
 	    GLINTFreeRec(pScrn);
 	    return FALSE;
 	}
-	xf86LoaderReqSymLists(shadowSymbols, NULL);
     }
 
     TRACE_EXIT("GLINTPreInit");
