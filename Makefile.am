@@ -22,3 +22,10 @@ AUTOMAKE_OPTIONS = foreign
 SUBDIRS = src man
 
 EXTRA_DIST = DRI.txt README.pm3
+
+.PHONY: ChangeLog
+
+ChangeLog:
+	$(CHANGELOG_CMD)
+
+dist-hook: ChangeLog
