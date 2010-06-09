@@ -3375,12 +3375,9 @@ GLINTCloseScreen(int scrnIndex, ScreenPtr pScreen)
 	XAADestroyInfoRec(pGlint->AccelInfoRec);
     if(pGlint->CursorInfoRec)
 	xf86DestroyCursorInfoRec(pGlint->CursorInfoRec);
-    if (pGlint->ShadowPtr)
-	free(pGlint->ShadowPtr);
-    if (pGlint->DGAModes)
-	free(pGlint->DGAModes);
-    if (pGlint->ScratchBuffer)
-	free(pGlint->ScratchBuffer);
+    free(pGlint->ShadowPtr);
+    free(pGlint->DGAModes);
+    free(pGlint->ScratchBuffer);
     pScrn->vtSema = FALSE;
     
     if (xf86IsPc98())

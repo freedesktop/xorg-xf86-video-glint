@@ -817,14 +817,12 @@ GLINTDRICloseScreen(ScreenPtr pScreen)
     DRICloseScreen(pScreen);
 	    
     if (pGlint->pDRIInfo) {
-	if (pGlint->pDRIInfo->devPrivate) {
-	    free(pGlint->pDRIInfo->devPrivate);
-	}
+	free(pGlint->pDRIInfo->devPrivate);
 	DRIDestroyInfoRec(pGlint->pDRIInfo);
     }
 
-    if (pGlint->pVisualConfigs) free(pGlint->pVisualConfigs);
-    if (pGlint->pVisualConfigsPriv) free(pGlint->pVisualConfigsPriv);
+    free(pGlint->pVisualConfigs);
+    free(pGlint->pVisualConfigsPriv);
 }
 
 Bool
