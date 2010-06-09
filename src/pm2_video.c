@@ -183,10 +183,8 @@ static AdaptorPrivPtr AdaptorPrivList = NULL;
 
 #define FreeCookies(pPPriv)		\
 do {					\
-    if ((pPPriv)->pCookies) {		\
-        free((pPPriv)->pCookies);	\
+	free((pPPriv)->pCookies);	\
 	(pPPriv)->pCookies = NULL;	\
-    }					\
 } while (0)
 
 #define PORTNUM(p) ((int)((p) - &pAPriv->Port[0]))
