@@ -81,8 +81,6 @@ AC_CHECK_DECL(XSERVER_LIBPCIACCESS,
 AC_CHECK_HEADER(cfb8_32.h,[AC_DEFINE(HAVE_CFB8_32, 1, [Have cfb8_32 support])],[])
 CPPFLAGS="$SAVE_CPPFLAGS"
 
-# Checks for header files.
-AC_HEADER_STDC
 
 if test "$DRI" != no; then
         AC_CHECK_FILE([${sdkdir}/dri.h],
