@@ -22,9 +22,9 @@
 
 AC_PREREQ([2.60])
 AC_INIT([xf86-video-glint],
-        1.2.4,
+        [1.2.4],
         [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg],
-        xf86-video-glint)
+        [xf86-video-glint])
 
 AC_CONFIG_SRCDIR([Makefile.am])
 AM_CONFIG_HEADER([config.h])
