@@ -502,7 +502,7 @@ Permedia3Init(ScrnInfoPtr pScrn, DisplayModePtr mode, GLINTRegPtr pReg)
     temp3 = mode->CrtcHSyncEnd - mode->CrtcHSyncStart;
     temp4 = mode->CrtcVSyncEnd - mode->CrtcVSyncStart;
 
-    STOREREG(PMHTotal,	Shiftbpp(pScrn, mode->CrtcHTotal - 1));
+    STOREREG(PMHTotal,	Shiftbpp(pScrn, mode->CrtcHTotal) - 1);
     STOREREG(PMHsEnd,	Shiftbpp(pScrn, temp1 + temp3));
     STOREREG(PMHsStart,	Shiftbpp(pScrn, temp1));
     STOREREG(PMHbEnd,	Shiftbpp(pScrn, mode->CrtcHTotal - mode->CrtcHDisplay));

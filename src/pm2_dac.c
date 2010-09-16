@@ -122,9 +122,9 @@ Permedia2Init(ScrnInfoPtr pScrn, DisplayModePtr mode)
     pReg->glintRegs[PMScreenStride >> 3] = 
 			Shiftbpp(pScrn,pScrn->displayWidth>>1);
 
-    pReg->glintRegs[PMVTotal >> 3] = mode->CrtcVTotal;
-    pReg->glintRegs[PMVsEnd >> 3] = temp2 + temp4;
-    pReg->glintRegs[PMVsStart >> 3] = temp2;
+    pReg->glintRegs[PMVTotal >> 3] = mode->CrtcVTotal - 1;
+    pReg->glintRegs[PMVsEnd >> 3] = temp2 + temp4 - 1;
+    pReg->glintRegs[PMVsStart >> 3] = temp2 - 1;
     pReg->glintRegs[PMVbEnd >> 3] = mode->CrtcVTotal - mode->CrtcVDisplay;
 
     /* The hw cursor needs /VSYNC to recognize vert retrace. We'll stick
@@ -146,8 +146,6 @@ Permedia2Init(ScrnInfoPtr pScrn, DisplayModePtr mode)
     pReg->glintRegs[VClkCtl >> 3] = (GLINT_READ_REG(VClkCtl) & 0xFFFFFFFC);
     pReg->glintRegs[PMScreenBase >> 3] = 0;
     pReg->glintRegs[PMHTotal >> 3] -= 1;
-    pReg->glintRegs[PMHsStart >> 3] -= 1;
-    pReg->glintRegs[PMVTotal >> 3] -= 1;
 
     pReg->glintRegs[ChipConfig >> 3] = GLINT_READ_REG(ChipConfig) & 0xFFFFFFDD;
     
