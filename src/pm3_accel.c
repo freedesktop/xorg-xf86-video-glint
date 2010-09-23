@@ -67,7 +67,6 @@
 #define PM3_OTHERWRITEMASK \
   (pGlint->PM3_UsingSGRAM ? PM3FBSoftwareWriteMask : PM3FBHardwareWriteMask )
 
-#ifndef XF86DRI_DEVEL
 #define PM3_PLANEMASK(planemask)				\
 { 								\
 	if (planemask != pGlint->planemask) {			\
@@ -76,14 +75,6 @@
 		GLINT_WRITE_REG(planemask, PM3_WRITEMASK);	\
 	}							\
 } 
-#else
-#define PM3_PLANEMASK(planemask)				\
-	{							\
-		pGlint->planemask = planemask;			\
-		REPLICATE(planemask); 				\
-		GLINT_WRITE_REG(planemask, PM3_WRITEMASK);	\
-	}
-#endif
 
 /* Clipping */
 static void Permedia3SetClippingRectangle(ScrnInfoPtr pScrn, int x, int y,

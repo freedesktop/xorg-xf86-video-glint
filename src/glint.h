@@ -42,14 +42,6 @@
 #include "xf86i2c.h"
 #include "xf86DDC.h"
 #include "xf86xv.h"
-#ifdef XF86DRI_DEVEL
-#include "xf86drm.h"
-#include "sarea.h"
-#define _XF86DRI_SERVER_
-#include "dri.h"
-#include "GL/glxint.h"
-#include "glint_dripriv.h"
-#endif
 
 #define GLINT_MAX_MULTI_DEVICES 2
 
@@ -174,21 +166,6 @@ typedef struct {
     void		(*VideoTimerCallback)(ScrnInfoPtr, Time);
     XF86VideoAdaptorPtr adaptor;
     int                 videoKey;
-#ifdef XF86DRI_DEVEL
-    Bool		directRenderingEnabled;
-    Bool		PCIMode;
-    DRIInfoPtr		pDRIInfo;
-    int			drmSubFD;
-    drmBufMapPtr        drmBufs;         /* Map of DMA buffers */
-    drmRegion		agp;
-    drmRegion		buffers;
-    int			numVisualConfigs;
-    __GLXvisualConfig*	pVisualConfigs;
-    GLINTConfigPrivPtr	pVisualConfigsPriv;
-    GLINTRegRec		DRContextRegs;
-    int			DRIctx;
-    unsigned char 	*buf2D;
-#endif
     OptionInfoPtr	Options;
     Bool		PM3_UsingSGRAM;
 } GLINTRec, *GLINTPtr;
@@ -345,16 +322,6 @@ void GLINTAdjustFrame(int scrnIndex, int x, int y, int flags);
 extern int partprodPermedia[];
 
 Bool GLINTDGAInit(ScreenPtr pScreen);
-
-Bool GLINTDRIScreenInit(ScreenPtr pScreen);
-Bool GLINTDRIFinishScreenInit(ScreenPtr pScreen);
-void GLINTDRICloseScreen(ScreenPtr pScreen);
-Bool GLINTInitGLXVisuals(ScreenPtr pScreen);
-void GLINTDRIWakeupHandler(ScreenPtr pScreen);
-void GLINTDRIBlockHandler(ScreenPtr pScreen);
-void GLINTDRIInitBuffers(WindowPtr pWin, RegionPtr prgn, CARD32 index);
-void GLINTDRIMoveBuffers(WindowPtr pWin, DDXPointRec ptOldOrg, 
-		RegionPtr prgnSrc, CARD32 index);
 
 void GLINT_VERB_WRITE_REG(GLINTPtr, CARD32 v, int r, char *file, int line);
 CARD32 GLINT_VERB_READ_REG(GLINTPtr, CARD32 r, char *file, int line);

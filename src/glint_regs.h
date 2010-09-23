@@ -1282,7 +1282,6 @@ do{								\
 	}							\
 }
 
-#ifndef XF86DRI_DEVEL
 #define LOADROP(rop)						\
 {								\
 	if (pGlint->ROP != rop)	{				\
@@ -1290,14 +1289,7 @@ do{								\
 		pGlint->ROP = rop;				\
 	}							\
 }
-#else
-#define LOADROP(rop) \
-	{				\
-		GLINT_WRITE_REG(rop<<1|UNIT_ENABLE, LogicalOpMode);	\
-		pGlint->ROP = rop;				\
-	}
-#endif
-	
+
 #define CHECKCLIPPING						\
 {								\
 	if (pGlint->ClippingOn) {				\
@@ -1307,7 +1299,6 @@ do{								\
 	}							\
 }
 
-#ifndef XF86DRI_DEVEL
 #define DO_PLANEMASK(planemask)					\
 { 								\
 	if (planemask != pGlint->planemask) {			\
@@ -1316,14 +1307,6 @@ do{								\
 		GLINT_WRITE_REG(planemask, FBHardwareWriteMask);\
 	}							\
 } 
-#else
-#define DO_PLANEMASK(planemask)					\
-	{							\
-		pGlint->planemask = planemask;			\
-		REPLICATE(planemask); 				\
-		GLINT_WRITE_REG(planemask, FBHardwareWriteMask);\
-	}
-#endif
 
 /* Permedia Save/Restore functions */
 

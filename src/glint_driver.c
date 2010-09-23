@@ -2799,19 +2799,6 @@ GLINTScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 	    return FALSE;
     }
 
-#ifdef XF86DRI_DEVEL
-    /*
-     * Setup DRI after visuals have been established, but before fbScreenInit
-     * is called. fbScreenInit will eventually call into the drivers
-     * InitGLXVisuals call back.
-     */
-    if (!pGlint->NoAccel && pGlint->HWCursor) {
-	pGlint->directRenderingEnabled = GLINTDRIScreenInit(pScreen);
-    } else {
-	pGlint->directRenderingEnabled = FALSE;
-    }
-#endif
-
     /*
      * Call the framebuffer layer's ScreenInit function, and fill in other
      * pScreen fields.
@@ -3036,22 +3023,6 @@ GLINTScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 	ShadowFBInit(pScreen, GLINTRefreshArea);
 
     xf86DPMSInit(pScreen, (DPMSSetProcPtr)GLINTDisplayPowerManagementSet, 0);
-
-#ifdef XF86DRI_DEVEL
-    if (pGlint->directRenderingEnabled) {
-	/* Now that mi, cfb, drm and others have done their thing, 
-         * complete the DRI setup.
-         */
-	pGlint->directRenderingEnabled = GLINTDRIFinishScreenInit(pScreen);
-    }
-    if (pGlint->directRenderingEnabled) {
-	xf86DrvMsg(pScrn->scrnIndex, X_INFO,
-            "direct rendering enabled\n");
-    } else {
-	xf86DrvMsg(pScrn->scrnIndex, X_INFO,
-            "direct rendering disabled\n");
-    }
-#endif
 
     pScrn->memPhysBase = pGlint->FbAddress;
     pScrn->fbOffset = 0;
@@ -3346,11 +3317,6 @@ GLINTCloseScreen(int scrnIndex, ScreenPtr pScreen)
     GLINTPtr pGlint = GLINTPTR(pScrn);
 
     TRACE_ENTER("GLINTCloseScreen");
-#ifdef XF86DRI_DEVEL
-    if (pGlint->directRenderingEnabled) {
-	GLINTDRICloseScreen(pScreen);
-    }
-#endif
 
     switch (pGlint->Chipset) {
         case PCI_VENDOR_TI_CHIP_PERMEDIA2:
