@@ -1,4 +1,3 @@
-/* $XdotOrg: driver/xf86-video-glint/src/pm3_accel.c,v 1.5 2005/07/11 02:29:49 ajax Exp $ */
 /*
  * Copyright 2000-2001 by Sven Luther <luther@dpt-info.u-strasbg.fr>.
  *
@@ -27,7 +26,6 @@
  * 
  * Permedia 3 accelerated options.
  */
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/pm3_accel.c,v 1.30 2002/05/21 14:38:04 alanh Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

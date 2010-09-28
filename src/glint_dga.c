@@ -21,7 +21,6 @@
  *
  * Authors:  Alan Hourihane, <alanh@fairlite.demon.co.uk>
  */
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/glint_dga.c,v 1.3 2001/04/10 20:33:30 dawes Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

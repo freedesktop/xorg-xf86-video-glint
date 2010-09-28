@@ -28,7 +28,6 @@
  * 
  * Permedia accelerated options.
  */
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/pm_accel.c,v 1.24tsi Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

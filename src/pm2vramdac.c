@@ -24,7 +24,6 @@
  * Permedia2vOutIndReg() and Permedia2vInIndReg() are used to access 
  * the indirect Permedia2v RAMDAC registers only.
  */
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/pm2vramdac.c,v 1.5 2001/01/30 10:06:35 alanh Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

@@ -26,7 +26,6 @@
  * this work is sponsored by Appian Graphics.
  * 
  */
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/pm3_dac.c,v 1.33tsi Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

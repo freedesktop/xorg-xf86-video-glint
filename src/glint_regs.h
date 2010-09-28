@@ -1,5 +1,3 @@
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/glint_regs.h,v 1.36 2003/01/12 03:55:47 tsi Exp $ */
-
 /*
  * glint register file 
  *

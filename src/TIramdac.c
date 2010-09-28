@@ -27,7 +27,6 @@
  * glintOutTIIndReg() and glintInTIIndReg() are used to access 
  * the indirect TI RAMDAC registers only.
  */
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/TIramdac.c,v 1.4 2001/01/31 16:14:52 alanh Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

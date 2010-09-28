@@ -27,7 +27,6 @@
  * this work is sponsored by S.u.S.E. GmbH, Fuerth, Elsa GmbH, Aachen and
  * Siemens Nixdorf Informationssysteme
  */
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/pm_dac.c,v 1.11tsi Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

@@ -22,7 +22,6 @@
  * Authors: Alan Hourihane, alanh@fairlite.demon.co.uk
  *          Sven Luther <luther@dpt-info.u-strasbg.fr>
  */
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/glint/pm3_video.c,v 1.14tsi Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
