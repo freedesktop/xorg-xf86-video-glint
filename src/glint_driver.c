@@ -236,8 +236,6 @@ static RamDacSupportedInfoRec TIRamdacs[] = {
     { -1 }
 };
 
-#ifdef XFree86LOADER
-
 static MODULESETUPPROTO(glintSetup);
 
 static XF86ModuleVersionInfo glintVersRec =
@@ -270,8 +268,6 @@ glintSetup(pointer module, pointer opts, int *errmaj, int *errmin)
     if (errmaj) *errmaj = LDR_ONCEONLY;
     return NULL;
 }
-
-#endif /* XFree86LOADER */
 
 #define PARTPROD(a,b,c) (((a)<<6) | ((b)<<3) | (c))
 

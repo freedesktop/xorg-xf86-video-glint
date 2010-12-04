@@ -3073,7 +3073,7 @@ Permedia2VideoInit(ScreenPtr pScreen)
 	xf86InitFBManager(pScreen, &AvailFBArea);
     }
 
-#if defined(XFree86LOADER) && 0
+#if 0
     if (xf86LoaderCheckSymbol("xf86InitLinearFBManagerRegion")) {
 	int last = pGlint->FbMapSize / (pScrn->bitsPerPixel / 8) - 1;
 	BoxRec AvailFBArea;
