@@ -199,28 +199,22 @@ static const Bool ColorBars = FALSE;
 
 typedef enum {
     OPTION_DEVICE,
-    OPTION_FPS,
-    OPTION_BUFFERS,
-    OPTION_ENCODING,
-    OPTION_EXPOSE	/* obsolete, ignored */
+    OPTION_IN_FPS,
+    OPTION_IN_BUFFERS,
+    OPTION_IN_ENCODING,
+    OPTION_OUT_FPS,
+    OPTION_OUT_BUFFERS,
+    OPTION_OUT_ENCODING,
 } OptToken;
 
-/* XXX These should be made const, and per-screen/adaptor copies processed. */
-static OptionInfoRec AdaptorOptions[] = {
+static const OptionInfoRec pm2Options[] = {
     { OPTION_DEVICE,		"Device",	OPTV_STRING,	{0}, FALSE },
-    { -1,			NULL,		OPTV_NONE,	{0}, FALSE }
-};
-static OptionInfoRec InputOptions[] = {
-    { OPTION_BUFFERS,		"Buffers",	OPTV_INTEGER,	{0}, FALSE },
-    { OPTION_FPS,		"FramesPerSec", OPTV_INTEGER,	{0}, FALSE },
-    { OPTION_ENCODING,		"Encoding",	OPTV_STRING,	{0}, FALSE },
-    { -1,			NULL,		OPTV_NONE,	{0}, FALSE }
-};
-static OptionInfoRec OutputOptions[] = {
-    { OPTION_BUFFERS,		"Buffers",	OPTV_INTEGER,	{0}, FALSE },
-    { OPTION_EXPOSE,		"Expose",	OPTV_BOOLEAN,	{0}, FALSE },
-    { OPTION_FPS,		"FramesPerSec", OPTV_INTEGER,	{0}, FALSE },
-    { OPTION_ENCODING,		"Encoding",	OPTV_STRING,	{0}, FALSE },
+    { OPTION_IN_BUFFERS,		"InputBuffers",	OPTV_INTEGER,	{0}, FALSE },
+    { OPTION_IN_FPS,		"InputFramesPerSec", OPTV_INTEGER,	{0}, FALSE },
+    { OPTION_IN_ENCODING,		"InputEncoding",	OPTV_STRING,	{0}, FALSE },
+    { OPTION_OUT_BUFFERS,		"OutputBuffers",	OPTV_INTEGER,	{0}, FALSE },
+    { OPTION_OUT_FPS,		"OutputFramesPerSec", OPTV_INTEGER,	{0}, FALSE },
+    { OPTION_OUT_ENCODING,		"OutputEncoding",	OPTV_STRING,	{0}, FALSE },
     { -1,			NULL,		OPTV_NONE,	{0}, FALSE }
 };
 
@@ -2964,12 +2958,13 @@ Permedia2VideoInit(ScreenPtr pScreen)
     ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
     GLINTPtr pGlint = GLINTPTR(pScrn);
     AdaptorPrivPtr pAPriv;
-    pointer options[3];
     DevUnion Private[PORTS];
     XF86VideoAdaptorRec VAR[ADAPTORS];
     XF86VideoAdaptorPtr VARPtrs[ADAPTORS];
     Bool VideoIO = TRUE;
     int i;
+    /* Glint is still intializing, so pGlint->Options is off-limits. */
+    OptionInfoPtr VidOpts;
 
     switch (pGlint->Chipset) {
     case PCI_VENDOR_TI_CHIP_PERMEDIA2:
@@ -2981,64 +2976,50 @@ Permedia2VideoInit(ScreenPtr pScreen)
         return;
     }
 
-    options[0] = NULL;	/* VideoAdaptor "input" subsection options */
-    options[1] = NULL;	/* VideoAdaptor "output" subsection options */
-    options[2] = NULL;	/* VideoAdaptor options */
-
-    for (i = 0;; i++) {
-	char *adaptor = NULL; /* receives VideoAdaptor section identifier */
-
-	if (!options[0])
-	    options[0] = xf86FindXvOptions(pScreen->myNum, i, "input", &adaptor, options[2] ? NULL : &options[2]);
-
-	if (!options[1])
-	    options[1] = xf86FindXvOptions(pScreen->myNum, i, "output", &adaptor, options[2] ? NULL : &options[2]);
-
-	if (!adaptor) {
-	    if (!i) /* VideoAdaptor reference enables Xv vio driver */
-		VideoIO = FALSE;
-	    break;
-	} else if (options[0] && options[1])
-	    break;
-    }
-
-    if (VideoIO) {
-      unsigned int temp;
-      PCI_READ_LONG(pGlint->PciInfo, &temp, PCI_SUBSYSTEM_ID_REG);
-      switch (temp) {
-	case PCI_SUBSYSTEM_ID_WINNER_2000_P2A:
-	case PCI_SUBSYSTEM_ID_WINNER_2000_P2C:
-	case PCI_SUBSYSTEM_ID_GLORIA_SYNERGY_P2A:
-	case PCI_SUBSYSTEM_ID_GLORIA_SYNERGY_P2C:
-	    break;
-
-	default:
-	    xf86DrvMsgVerb(pScrn->scrnIndex, X_PROBED, 1, "No Xv vio support for this board\n");
-	    VideoIO = FALSE;
-	}
-    }
-    if (pGlint->NoAccel && !VideoIO)
+    xf86CollectOptions(pScrn, NULL);
+    /* Process the options */
+    if (!(VidOpts = malloc(sizeof(pm2Options))))
 	return;
+
+    memcpy(VidOpts, pm2Options, sizeof(pm2Options));
+
+    xf86ProcessOptions(pScrn->scrnIndex, pScrn->options, VidOpts);
+    xf86ShowUnusedOptions(pScrn->scrnIndex, VidOpts);
+
+    /* Don't complain about no Xv support unless they asked for Xv support.
+       Assume they want Xv if OPTION_DEVICE is set, since that's required. */
+	if (xf86IsOptionSet(VidOpts, OPTION_DEVICE)) {
+	    unsigned int temp;
+	    PCI_READ_LONG(pGlint->PciInfo, &temp, PCI_SUBSYSTEM_ID_REG);
+	    switch (temp) {
+		    case PCI_SUBSYSTEM_ID_WINNER_2000_P2A:
+		    case PCI_SUBSYSTEM_ID_WINNER_2000_P2C:
+		    case PCI_SUBSYSTEM_ID_GLORIA_SYNERGY_P2A:
+		    case PCI_SUBSYSTEM_ID_GLORIA_SYNERGY_P2C:
+			    break;
+		    default:
+			    VideoIO = FALSE;
+			    xf86DrvMsgVerb(pScrn->scrnIndex, X_PROBED, 1, "No Xv vio support for this board\n");
+	    }
+	}
+    else
+	    /* Assume they don't, even if other options are set. */
+	    VideoIO = FALSE;
+
+    if (pGlint->NoAccel && !VideoIO) {
+	    free(VidOpts);
+	    return;
+    }
 
     xf86DrvMsgVerb(pScrn->scrnIndex, X_INFO, 1, "Initializing Xv driver rev. 4\n");
 
-    if (VideoIO) {
-	for (i = 0; i <= 2; i++) {
-	    xf86ProcessOptions(pScrn->scrnIndex, options[i],
-		(i == 0) ? InputOptions :
-		(i == 1) ? OutputOptions :
-			   AdaptorOptions);
-
-	    xf86ShowUnusedOptions(pScrn->scrnIndex, options[i]);
-	}
-
-	if (xf86IsOptionSet(AdaptorOptions, OPTION_DEVICE)) {
-    	    if (!xvipcOpen(xf86GetOptValString(AdaptorOptions, OPTION_DEVICE), pScrn))
+	if (VideoIO) {
+	    if (!xvipcOpen(xf86GetOptValString(VidOpts, OPTION_DEVICE), pScrn))
 		VideoIO = FALSE;
-	}
     }
 
     if (!(pAPriv = NewAdaptorPriv(pScrn, VideoIO))) {
+	free(VidOpts);
 	xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "Xv driver initialization failed\n");
 	return;
     }
@@ -3046,14 +3027,14 @@ Permedia2VideoInit(ScreenPtr pScreen)
     if (VideoIO) {
 	int n;
 
-	if (xf86GetOptValInteger(InputOptions, OPTION_BUFFERS, &n))
+	if (xf86GetOptValInteger(VidOpts, OPTION_IN_BUFFERS, &n))
 	    pAPriv->Port[0].BuffersRequested = CLAMP(n, 1, 2);
-	if (xf86GetOptValInteger(InputOptions, OPTION_FPS, &n))
+	if (xf86GetOptValInteger(VidOpts, OPTION_IN_FPS, &n))
 	    pAPriv->Port[0].FramesPerSec = CLAMP(n, 1, 30);
 
-	if (xf86GetOptValInteger(OutputOptions, OPTION_BUFFERS, &n))
+	if (xf86GetOptValInteger(VidOpts, OPTION_OUT_BUFFERS, &n))
 	    pAPriv->Port[1].BuffersRequested = 1;
-	if (xf86GetOptValInteger(OutputOptions, OPTION_FPS, &n))
+	if (xf86GetOptValInteger(VidOpts, OPTION_OUT_FPS, &n))
 	    pAPriv->Port[1].FramesPerSec = CLAMP(n, 1, 30);	
     }
 
@@ -3073,7 +3054,7 @@ Permedia2VideoInit(ScreenPtr pScreen)
 	xf86InitFBManager(pScreen, &AvailFBArea);
     }
 
-#if 0
+#if defined(XFree86LOADER) && 0
     if (xf86LoaderCheckSymbol("xf86InitLinearFBManagerRegion")) {
 	int last = pGlint->FbMapSize / (pScrn->bitsPerPixel / 8) - 1;
 	BoxRec AvailFBArea;
@@ -3178,14 +3159,14 @@ Permedia2VideoInit(ScreenPtr pScreen)
 	xf86DrvMsg(pScrn->scrnIndex, X_INFO, "Xv frontend scaler enabled\n");
 
 	if (VideoIO) {
-	    if ((s = xf86GetOptValString(InputOptions, OPTION_ENCODING)))
+	    if ((s = xf86GetOptValString(VidOpts, OPTION_IN_ENCODING)))
 	        for (i = 0; i < ENTRIES(InputVideoEncodings); i++)
 		    if (!strncmp(s, InputVideoEncodings[i].name, strlen(s))) {
 			Permedia2SetPortAttribute(pScrn, xvEncoding, i, (pointer) &pAPriv->Port[0]);
 			break;
 		    }
 
-	    if ((s = xf86GetOptValString(OutputOptions, OPTION_ENCODING)))
+	    if ((s = xf86GetOptValString(VidOpts, OPTION_OUT_ENCODING)))
 		for (i = 0; i < ENTRIES(OutputVideoEncodings); i++)
 		    if (!strncmp(s, OutputVideoEncodings[i].name, strlen(s))) {
 			Permedia2SetPortAttribute(pScrn, xvEncoding, i, (pointer) &pAPriv->Port[1]);
@@ -3199,4 +3180,6 @@ Permedia2VideoInit(ScreenPtr pScreen)
 	xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "Xv initialization failed\n");
 	DeleteAdaptorPriv(pAPriv);
     }
+
+    free(VidOpts);
 }
