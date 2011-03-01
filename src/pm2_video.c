@@ -1690,7 +1690,7 @@ Permedia2GetStill(ScrnInfoPtr pScrn,
 }
 
 static void
-CopyYV12LE(CARD8 *Y, CARD32 *dst, int width, int height, int pitch)
+CopyYV12(CARD8 *Y, CARD32 *dst, int width, int height, int pitch)
 {
     int Y_size = width * height;
     CARD8 *V = Y + Y_size;
@@ -1715,7 +1715,30 @@ CopyYV12LE(CARD8 *Y, CARD32 *dst, int width, int height, int pitch)
 #if X_BYTE_ORDER == X_BIG_ENDIAN
 
 static void
-CopyYV12BE(CARD8 *Y, CARD32 *dst, int width, int height, int pitch)
+CopyYV12_16(CARD8 *Y, CARD32 *dst, int width, int height, int pitch)
+{
+    int Y_size = width * height;
+    CARD8 *V = Y + Y_size;
+    CARD8 *U = V + (Y_size >> 2);
+    int pad = (pitch >> 2) - (width >> 1);
+    int x;
+
+    width >>= 1;
+
+    for (height >>= 1; height > 0; height--) {
+	for (x = 0; x < width; Y += 2, x++)
+	    *dst++ = Y[1] + (V[x] << 8) + (Y[0] << 16) + (U[x] << 24);
+	dst += pad;
+	for (x = 0; x < width; Y += 2, x++)
+	    *dst++ = Y[1] + (V[x] << 8) + (Y[0] << 16) + (U[x] << 24);
+	dst += pad;
+	U += width;
+	V += width;
+    }
+}
+
+static void
+CopyYV12_8(CARD8 *Y, CARD32 *dst, int width, int height, int pitch)
 {
     int Y_size = width * height;
     CARD8 *V = Y + Y_size;
@@ -1737,7 +1760,7 @@ CopyYV12BE(CARD8 *Y, CARD32 *dst, int width, int height, int pitch)
     }
 }
 
-#endif /* X_BYTE_ORDER == X_BIG_ENDIAN */
+#endif
 
 static void
 CopyFlat(CARD8 *src, CARD8 *dst, int width, int height, int pitch)
@@ -1835,17 +1858,24 @@ Permedia2PutImage(ScrnInfoPtr pScrn,
 
     switch (id) {
     case LE4CC('Y','V','1','2'):
-#if X_BYTE_ORDER == X_LITTLE_ENDIAN
-	CopyYV12LE(buf, (CARD32 *)((CARD8 *) pGlint->FbBase + pPPriv->BufferBase[0]),
-	    width, height, pPPriv->BufferStride);
-#else
-	if (pGlint->FBDev)
-	    CopyYV12LE(buf, (CARD32 *)((CARD8 *) pGlint->FbBase + pPPriv->BufferBase[0]),
+	switch(pGlint->HwBpp) {
+#if X_BYTE_ORDER == X_BIG_ENDIAN
+	case 8:
+	case 24:
+	    CopyYV12_8(buf, (CARD32 *)((CARD8 *) pGlint->FbBase + pPPriv->BufferBase[0]),
 		width, height, pPPriv->BufferStride);
-	else
-	    CopyYV12BE(buf, (CARD32 *)((CARD8 *) pGlint->FbBase + pPPriv->BufferBase[0]),
+	    break;
+	case 15:
+	case 16:
+	    CopyYV12_16(buf, (CARD32 *)((CARD8 *) pGlint->FbBase + pPPriv->BufferBase[0]),
 		width, height, pPPriv->BufferStride);
+	    break;
 #endif
+	default:
+	    CopyYV12(buf, (CARD32 *)((CARD8 *) pGlint->FbBase + pPPriv->BufferBase[0]),
+		width, height, pPPriv->BufferStride);
+	    break;
+	}
 	PutYUV(pPPriv, pPPriv->BufferBase[0], FORMAT_YUYV, 1, 0);
 	break;
 
