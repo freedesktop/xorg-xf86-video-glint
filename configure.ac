@@ -23,7 +23,7 @@
 # Initialize Autoconf
 AC_PREREQ([2.60])
 AC_INIT([xf86-video-glint],
-        [1.2.5],
+        [1.2.6],
         [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg&component=Driver/glint],
         [xf86-video-glint])
 AC_CONFIG_SRCDIR([Makefile.am])
