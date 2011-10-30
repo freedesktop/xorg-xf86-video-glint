@@ -2619,8 +2619,10 @@ GLINTModeInit(ScrnInfoPtr pScrn, DisplayModePtr mode)
 	break;
     }
 
+#if GET_ABI_MAJOR(ABI_VIDEODRV_VERSION) < 12
     if (xf86IsPc98())
        outb(0xfac, 0x01);
+#endif
 
     return TRUE;
 }
@@ -3260,8 +3262,10 @@ GLINTLeaveVT(int scrnIndex, int flags)
     pGlint->STATE = TRUE;
     GLINTRestore(pScrn);
 
+#if GET_ABI_MAJOR(ABI_VIDEODRV_VERSION) < 12
     if (xf86IsPc98())
        outb(0xfac, 0x00);
+#endif
 
     TRACE_EXIT("GLINTLeaveVT");
 }
@@ -3308,9 +3312,11 @@ GLINTCloseScreen(int scrnIndex, ScreenPtr pScreen)
     free(pGlint->DGAModes);
     free(pGlint->ScratchBuffer);
     pScrn->vtSema = FALSE;
-    
+
+#if GET_ABI_MAJOR(ABI_VIDEODRV_VERSION) < 12
     if (xf86IsPc98())
        outb(0xfac, 0x00);
+#endif
 
     if(pGlint->BlockHandler)
 	pScreen->BlockHandler = pGlint->BlockHandler;
