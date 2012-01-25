@@ -35,7 +35,6 @@
 #include "xf86.h"
 #include "xf86_OSproc.h"
 
-#include "xf86PciInfo.h"
 #include "xf86Pci.h"
 
 #include "glint_regs.h"
@@ -496,7 +495,7 @@ Permedia2vCursorColorCallback(
 
     if ((pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA3) ||
 	((pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_GAMMA) &&
-	 (pGlint->MultiChip == PCI_CHIP_PERMEDIA3)) ) {
+	 (pGlint->MultiChip == PCI_CHIP_3DLABS_PERMEDIA3)) ) {
     /* PM3 uses last 2 indexes into hardware cursor palette fg first...*/
     Permedia2vOutIndReg(pScrn, PM2VDACRDCursorPalette+39, 0x00, (fg>>16)&0xff);
     Permedia2vOutIndReg(pScrn, PM2VDACRDCursorPalette+40, 0x00, (fg>>8)&0xff);

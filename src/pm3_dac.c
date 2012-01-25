@@ -34,7 +34,6 @@
 #include "xf86.h"
 #include "xf86_OSproc.h"
 
-#include "xf86PciInfo.h"
 #include "xf86Pci.h"
 #include "xf86int10.h"
 
@@ -565,11 +564,11 @@ Permedia3Init(ScrnInfoPtr pScrn, DisplayModePtr mode, GLINTRegPtr pReg)
 	  break;
 	case PCI_VENDOR_3DLABS_CHIP_GAMMA:
 	  switch (pGlint->MultiChip) {
-	    case PCI_CHIP_PERMEDIA3:
+	    case PCI_CHIP_3DLABS_PERMEDIA3:
 		(void) PM3DAC_CalculateClock(mode->Clock,
 					    pGlint->RefClock, &m,&n,&p);
 		break;
-	    case PCI_CHIP_R4:
+	    case PCI_CHIP_3DLABS_R4:
 		(void) PM4DAC_CalculateClock(mode->Clock,
 					    pGlint->RefClock, &m,&n,&p);
 		break;

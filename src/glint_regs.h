@@ -30,6 +30,11 @@
 #define PCI_CHIP_3DLABS_PERMEDIA4				0x0C
 #define PCI_CHIP_3DLABS_R4					0x0D
 #define PCI_CHIP_3DLABS_GAMMA2					0x0E
+#define PCI_CHIP_3DLABS_R4ALT					0x11
+
+/* Texas Instruments */
+#define PCI_CHIP_TI_PERMEDIA					0x3D04
+#define PCI_CHIP_TI_PERMEDIA2					0x3D07
 
 /* The boards we know */
 #define IS_GLORIAXXL	((PCI_SUB_VENDOR_ID(pGlint->PciInfo) == 0x1048) && \
