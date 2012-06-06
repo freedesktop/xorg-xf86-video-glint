@@ -73,7 +73,7 @@ static Atom xvColorKey, xvDoubleBuffer, xvAutopaintColorKey, xvFilter;
 
 void Permedia3InitVideo(ScreenPtr pScreen)
 {
-    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+    ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     XF86VideoAdaptorPtr *adaptors, *newAdaptors = NULL;
     XF86VideoAdaptorPtr newAdaptor = NULL;
     GLINTPtr pGlint = GLINTPTR(pScrn);
@@ -280,7 +280,7 @@ void Permedia3ResetVideo(ScrnInfoPtr pScrn)
 static XF86VideoAdaptorPtr 
 Permedia3SetupImageVideo(ScreenPtr pScreen)
 {
-    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+    ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     GLINTPtr pGlint = GLINTPTR(pScrn);
     XF86VideoAdaptorPtr adapt;
     GLINTPortPrivPtr pPriv;
@@ -623,7 +623,7 @@ Permedia3AllocateMemory(ScrnInfoPtr pScrn, FBAreaPtr area, int width, int height
     xf86FreeOffscreenArea(area);
   }
 
-  pScreen = screenInfo.screens[pScrn->scrnIndex];
+  pScreen = xf86ScrnToScreen(pScrn);
 
   new_area = xf86AllocateOffscreenArea(pScreen, width, height, pScrn->bitsPerPixel / 8, NULL, NULL, NULL);
 

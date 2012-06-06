@@ -42,6 +42,7 @@
 #include "xf86DDC.h"
 #include "xf86xv.h"
 
+#include "compat-api.h"
 #define GLINT_MAX_MULTI_DEVICES 2
 
 #define GLINT_VERSION 4000
@@ -315,8 +316,8 @@ void Permedia2vOutIndReg(ScrnInfoPtr pScrn,
 		   CARD32, unsigned char mask, unsigned char data);
 unsigned char Permedia2vInIndReg(ScrnInfoPtr pScrn, CARD32);
 
-Bool GLINTSwitchMode(int scrnIndex, DisplayModePtr mode, int flags);
-void GLINTAdjustFrame(int scrnIndex, int x, int y, int flags);
+Bool GLINTSwitchMode(SWITCH_MODE_ARGS_DECL);
+void GLINTAdjustFrame(ADJUST_FRAME_ARGS_DECL);
 
 extern int partprodPermedia[];
 

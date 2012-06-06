@@ -60,7 +60,7 @@ DGAFunctionRec GLINTDGAFuncs = {
 Bool
 GLINTDGAInit(ScreenPtr pScreen)
 {   
-   ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+   ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
    GLINTPtr pGlint = GLINTPTR(pScrn);
    DGAModePtr modes = NULL, newmodes = NULL, currentMode;
    DisplayModePtr pMode, firstMode;
@@ -167,7 +167,7 @@ GLINT_SetMode(
 	
 	pScrn->displayWidth = OldDisplayWidth[index];
 	
-        GLINTSwitchMode(index, pScrn->currentMode, 0);
+        GLINTSwitchMode(SWITCH_MODE_ARGS(pScrn, pScrn->currentMode));
 	pGlint->DGAactive = FALSE;
    } else {
 	if(!pGlint->DGAactive) {  /* save the old parameters */
@@ -179,7 +179,7 @@ GLINT_SetMode(
 	pScrn->displayWidth = pMode->bytesPerScanline / 
 			      (pMode->bitsPerPixel >> 3);
 
-        GLINTSwitchMode(index, pMode->mode, 0);
+        GLINTSwitchMode(SWITCH_MODE_ARGS(pScrn, pMode->mode));
    }
    
    return TRUE;
@@ -202,7 +202,7 @@ GLINT_SetViewport(
 ){
    GLINTPtr pGlint = GLINTPTR(pScrn);
 
-   GLINTAdjustFrame(pScrn->pScreen->myNum, x, y, flags);
+   GLINTAdjustFrame(ADJUST_FRAME_ARGS(pScrn, x, y));
    pGlint->DGAViewportStatus = 0;  /* GLINTAdjustFrame loops until finished */
 }
 

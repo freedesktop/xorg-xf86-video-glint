@@ -192,7 +192,7 @@ Bool
 TXAccelInit(ScreenPtr pScreen)
 {
     XAAInfoRecPtr infoPtr;
-    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+    ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     GLINTPtr pGlint = GLINTPTR(pScrn);
     long memory = pGlint->FbMapSize;
     BoxRec AvailFBArea;

@@ -385,7 +385,7 @@ Bool
 Permedia3AccelInit(ScreenPtr pScreen)
 {
     XAAInfoRecPtr infoPtr;
-    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+    ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     GLINTPtr pGlint = GLINTPTR(pScrn);
 
     pGlint->AccelInfoRec = infoPtr = XAACreateInfoRec();
@@ -492,7 +492,7 @@ Permedia3AccelInit(ScreenPtr pScreen)
 void
 Permedia3EnableOffscreen (ScreenPtr pScreen)
 {
-    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+    ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     GLINTPtr pGlint = GLINTPTR(pScrn);
     BoxRec AvailFBArea;
 
