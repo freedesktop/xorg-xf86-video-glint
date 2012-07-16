@@ -38,8 +38,6 @@
 #include "glint_regs.h"
 #include "pm3_regs.h"
 #include <X11/extensions/Xv.h>
-#include "xaa.h"
-#include "xaalocal.h"
 #include "dixstruct.h"
 #include "fourcc.h"
 

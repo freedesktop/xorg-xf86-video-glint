@@ -3301,8 +3301,10 @@ GLINTCloseScreen(CLOSE_SCREEN_ARGS_DECL)
 	}
         GLINTUnmapMem(pScrn);
     }
+#ifdef HAVE_XAA_H
     if(pGlint->AccelInfoRec)
 	XAADestroyInfoRec(pGlint->AccelInfoRec);
+#endif
     if(pGlint->CursorInfoRec)
 	xf86DestroyCursorInfoRec(pGlint->CursorInfoRec);
     free(pGlint->ShadowPtr);

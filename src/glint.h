@@ -35,7 +35,10 @@
 
 #include "glintpcirename.h"
 
+#ifdef HAVE_XAA_H
 #include "xaa.h"
+#endif
+#include "xf86fbman.h"
 #include "xf86RamDac.h"
 #include "xf86cmap.h"
 #include "xf86i2c.h"
@@ -142,7 +145,9 @@ typedef struct {
     CARD32		PixelWidth;
     RamDacRecPtr	RamDacRec;
     xf86CursorInfoPtr	CursorInfoRec;
+#ifdef HAVE_XAA_H
     XAAInfoRecPtr	AccelInfoRec;
+#endif
     CloseScreenProcPtr	CloseScreen;
     ScreenBlockHandlerProcPtr BlockHandler;
     GCPtr		CurrentGC;

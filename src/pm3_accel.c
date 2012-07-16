@@ -45,6 +45,7 @@
 #include "pm3_regs.h"
 #include "glint.h"
 
+#ifdef HAVE_XAA_H
 #include "xaalocal.h"		/* For replacements */
 
 #define DEBUG 0
@@ -380,10 +381,11 @@ Permedia3InitializeEngine(ScrnInfoPtr pScrn)
     	(*pGlint->AccelInfoRec->Sync)(pScrn);
     TRACE_EXIT("Permedia3InitializeEngine");
 }
-
+#endif
 Bool
 Permedia3AccelInit(ScreenPtr pScreen)
 {
+#ifdef HAVE_XAA_H
     XAAInfoRecPtr infoPtr;
     ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     GLINTPtr pGlint = GLINTPTR(pScrn);
@@ -487,6 +489,9 @@ Permedia3AccelInit(ScreenPtr pScreen)
     Permedia3EnableOffscreen(pScreen);
 
     return(XAAInit(pScreen, infoPtr));
+#else
+    return FALSE;
+#endif
 }
 
 void
@@ -510,6 +515,9 @@ Permedia3EnableOffscreen (ScreenPtr pScreen)
 
     xf86InitFBManager(pScreen, &AvailFBArea);
 }
+
+#ifdef HAVE_XAA_H
+
 #define CHECKCLIPPING				\
 {						\
     if (pGlint->ClippingOn) {			\
@@ -1211,3 +1219,4 @@ Permedia3WriteBitmap(ScrnInfoPtr pScrn,
     Permedia3DisableClipping(pScrn);
     Permedia3Sync(pScrn);
 }
+#endif
