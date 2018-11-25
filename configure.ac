@@ -24,7 +24,7 @@
 AC_PREREQ([2.60])
 AC_INIT([xf86-video-glint],
         [1.2.9],
-        [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg&component=Driver/glint],
+        [https://gitlab.freedesktop.org/xorg/driver/xf86-video-glint/issues],
         [xf86-video-glint])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS([config.h])
